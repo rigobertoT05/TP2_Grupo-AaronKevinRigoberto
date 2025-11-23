@@ -9,6 +9,7 @@ package TP2_Grupo_AaronKevinRigoberto;
  * @author rigoberto
  */
 public class Cliente {
+    // Atributos de la clase Cliente
     private int identificadorUnico;
     private String nombre;
     private int numeroTelefono;
