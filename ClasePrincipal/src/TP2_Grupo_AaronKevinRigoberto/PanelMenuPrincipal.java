@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package TP2_Grupo_AaronKevinRigoberto;
 
 /**
@@ -133,23 +130,31 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGestionClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionClientesActionPerformed
-        // TODO add your handling code here:
+     GestionDeClientes gestionCliente = new GestionDeClientes(this);
+     gestionCliente.setVisible(true);
+      this.setVisible(false);
     }//GEN-LAST:event_btnGestionClientesActionPerformed
 
     private void btnGestionEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionEmpleadosActionPerformed
-        // TODO add your handling code here:
+     GestionDeEmpleados gestionEmpleado = new GestionDeEmpleados(this);
+     gestionEmpleado.setVisible(true);
+      this.setVisible(false);
     }//GEN-LAST:event_btnGestionEmpleadosActionPerformed
 
     private void btnGestionReservacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionReservacionesActionPerformed
-        // TODO add your handling code here:
+     GestionDeReservaciones gestionReservaciones = new GestionDeReservaciones(this);
+     gestionReservaciones .setVisible(true);
+      this.setVisible(false);
     }//GEN-LAST:event_btnGestionReservacionesActionPerformed
 
     private void btnGestionServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionServiciosActionPerformed
-        // TODO add your handling code here:
+     GestionDeServicios gestionServicios = new GestionDeServicios(this);
+     gestionServicios.setVisible(true);
+      this.setVisible(false);
     }//GEN-LAST:event_btnGestionServiciosActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

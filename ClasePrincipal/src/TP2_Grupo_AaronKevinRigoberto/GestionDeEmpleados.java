@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package TP2_Grupo_AaronKevinRigoberto;
 
 /**
@@ -10,11 +7,11 @@ package TP2_Grupo_AaronKevinRigoberto;
  */
 public class GestionDeEmpleados extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GestionDeEmpleados
-     */
-    public GestionDeEmpleados() {
+    private PanelMenuPrincipal menu;
+    
+    public GestionDeEmpleados(PanelMenuPrincipal menu) {
         initComponents();
+        this.menu = menu;
     }
 
     /**
@@ -72,7 +69,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionDeEmpleados().setVisible(true);
+         new PanelMenuPrincipal().setVisible(true);;
             }
         });
     }
