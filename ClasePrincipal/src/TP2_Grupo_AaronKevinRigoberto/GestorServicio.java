@@ -35,6 +35,8 @@ public class GestorServicio {
      return false;    
     }
     
+    
+    
     public static boolean modificarServicio(String id, String nombre,int duracion, double costo){
     Servicio servicio = buscarPorID(id);
         if (servicio != null) {
