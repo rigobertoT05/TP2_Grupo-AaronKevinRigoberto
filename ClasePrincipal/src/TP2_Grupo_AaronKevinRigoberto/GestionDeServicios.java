@@ -115,7 +115,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
             }
         });
 
-        lblDuración.setText("Duracion:");
+        lblDuración.setText("Duracion (minutos):");
 
         cmbTipoDeServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trantamiento Capilar", "Corte de Cabello", "Manicure" }));
 
