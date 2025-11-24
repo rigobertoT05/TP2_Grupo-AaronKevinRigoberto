@@ -20,11 +20,39 @@ public abstract class Servicio implements Serializable {
         this.costo = costo;
 }
 
-    // Getters y Setters necesarios
-    public String getNombre() { return nombre; }
-    public String getIdentificador() { return identificador; }
-    public double getCosto() { return costo; }
-    
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getDuracionMinutos() {
+        return duracionMinutos;
+    }
+
+    public void setDuracionMinutos(int duracionMinutos) {
+        this.duracionMinutos = duracionMinutos;
+    }
+
+    public double getCosto() {
+        return costo;
+    }
+
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }
+
+
     // Método abstracto para polimorfismo: cada servicio calcula su descripción diferente
     public abstract String obtenerDetalleServicio();
 }

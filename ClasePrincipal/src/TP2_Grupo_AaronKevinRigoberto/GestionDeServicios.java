@@ -1,6 +1,7 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
+public class GestionDeServicios extends javax.swing.JFrame {
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
