@@ -49,7 +49,9 @@ public class GestionDeServicios extends javax.swing.JFrame {
         } else {
             cmbDuracion.addItem(horas + " h " + resto + " min");}}}
     
+    
     private void configurarTabla() {
+        
         modeloTabla = new DefaultTableModel(
             new Object[]{"ID", "Nombre", "Duracion (min)", "Costo"}, 0
         ) {
@@ -67,7 +69,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
             servicio.getIdentificador(),
             servicio.getNombre(),
             servicio.getDuracionMinutos(),
-            servicio.getCosto()
+            servicio.getCosto() + "₡"
         });
     }
 }
@@ -348,7 +350,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        // TODO add your handling code here:
+       refrescarTabla();     // TODO add your handling code here:
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -391,7 +393,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
         Servicio nuevoServicio;
         
             switch (tipo) {
-            case "Corte de cabello":
+            case "Corte de Cabello":
                 nuevoServicio = new CorteCabello(id, nombre,duracion,costoBase,false); break;
             case "Trantamiento Capilar":
                 nuevoServicio = new TratamientoCapilar(tipo, nombre, duracion, costoBase); break;
