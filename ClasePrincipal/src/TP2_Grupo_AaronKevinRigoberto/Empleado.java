@@ -1,29 +1,28 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
-/**
- *
- * @author rigoberto
- */
-public class Empleado {
+import java.io.Serializable;
+
+public class Empleado implements Serializable {
     // Atributos de la clase Empleado
- private int identificador;
+    
+ private String identificador;
  private String nombre;
  private String especialidad;
- private int numeroTelefono;
+ private String numeroTelefono;
 
-    public Empleado(int identificador, String nombre, String especialidad, int numeroTelefono) {
+    public Empleado(String identificador,String nombre, String especialidad, String numeroTelefono) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.especialidad = especialidad;
         this.numeroTelefono = numeroTelefono;
     }
 
-    public int getIdentificador() {
+    public String getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(int identificador) {
+    public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
 
@@ -43,13 +42,16 @@ public class Empleado {
         this.especialidad = especialidad;
     }
 
-    public int getNumeroTelefono() {
+    public String getNumeroTelefono() {
         return numeroTelefono;
     }
 
-    public void setNumeroTelefono(int numeroTelefono) {
+    public void setNumeroTelefono(String numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
     }
- 
+    @Override
+    public String toString() {
+        return nombre + " - " + especialidad;
+    }
  
 }
