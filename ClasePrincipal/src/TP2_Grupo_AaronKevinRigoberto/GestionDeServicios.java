@@ -25,38 +25,50 @@ public class GestionDeServicios extends javax.swing.JFrame {
 
     }
     private void configurarComboDuracion() {
-    cmbDuracion.removeAllItems();
-    cmbDuracion.addItem("Seleccionar");
 
-    // Minutos: 10–50 (pasos de 5)
-    for (int min = 10; min <= 50; min += 5) {
-        cmbDuracion.addItem(min + " min");
+    cmbDuracion.removeAllItems();
+    cmbDuracion.addItem("Elegir...");
+
+    // Minutos (10–50)
+    for (int i = 10; i <= 50; i += 10) {
+        cmbDuracion.addItem(i + " min");
     }
 
-    // Horas convertidas: 1h hasta 6h, con pasos de 30 minutos
+    // Horas (1h–6h)
+    for (int h = 1; h <= 6; h++) {
+        cmbDuracion.addItem(h + " h");
+    }
     for (int minutos = 60; minutos <= 360; minutos += 30) {
         int horas = minutos / 60;
         int resto = minutos % 60;
-
         if (resto == 0) {
             cmbDuracion.addItem(horas + " h");
         } else {
             cmbDuracion.addItem(horas + " h " + resto + " min");}}}
     
     private void configurarTabla() {
-        // Crea modelo de tabla con columnas no editables
         modeloTabla = new DefaultTableModel(
             new Object[]{"ID", "Nombre", "Duracion (min)", "Costo"}, 0
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        
- tblMostrarDatos.setModel(modeloTabla);
-        
+                return false;}};
+ tblMostrarDatos.setModel(modeloTabla);}
+    
+    private void refrescarTabla() {
+
+    modeloTabla.setRowCount(0);
+
+    for (Servicio servicio : GestorServicio.getServicios()) {
+        modeloTabla.addRow(new Object[]{
+            servicio.getIdentificador(),
+            servicio.getNombre(),
+            servicio.getDuracionMinutos(),
+            servicio.getCosto()
+        });
     }
+}
+
     
 
     /**
@@ -339,7 +351,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
     String id = txtIDServicio.getText().trim();
     String nombre = txtNombreServicio.getText().trim();
-    int duracion = (int) cmbDuracion.getSelectedItem();
+    String selccionDuracion = (String) cmbDuracion.getSelectedItem();
     double costoBase;
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El ID no puede estar vación.");
@@ -348,7 +360,14 @@ public class GestionDeServicios extends javax.swing.JFrame {
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El nombre no puede estar vacío.");
         return;}
-        
+        int duracion;
+        if (selccionDuracion.endsWith("min")) {
+                duracion = Integer.parseInt(selccionDuracion.replace(" min", "").trim());
+        }
+        else {
+            int horas = Integer.parseInt(selccionDuracion.replace(" h", "").trim());
+            duracion = horas * 60;
+        }
         if (duracion <= 0) {
             JOptionPane.showMessageDialog(this,"La duración debe ser mayor que 0.");
         return; }
