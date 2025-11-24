@@ -24,21 +24,37 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        lblSistemaGestionDeReservas = new javax.swing.JLabel();
         btnGestionClientes = new javax.swing.JButton();
         btnGestionEmpleados = new javax.swing.JButton();
         btnGestionServicios = new javax.swing.JButton();
         btnGestionReservaciones = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(50, 150, 222));
-        jLabel1.setText("Sistema de Gestión de Reservaciones de Peluquería ");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 36, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        lblSistemaGestionDeReservas.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        lblSistemaGestionDeReservas.setForeground(new java.awt.Color(50, 150, 222));
+        lblSistemaGestionDeReservas.setText("Sistema de Gestión de Reservaciones de Peluquería ");
+        jPanel1.add(lblSistemaGestionDeReservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
 
         btnGestionClientes.setBackground(new java.awt.Color(102, 204, 255));
         btnGestionClientes.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -49,6 +65,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
                 btnGestionClientesActionPerformed(evt);
             }
         });
+        jPanel1.add(btnGestionClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 300, 100));
 
         btnGestionEmpleados.setBackground(new java.awt.Color(51, 153, 255));
         btnGestionEmpleados.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -59,6 +76,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
                 btnGestionEmpleadosActionPerformed(evt);
             }
         });
+        jPanel1.add(btnGestionEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 180, 300, 100));
 
         btnGestionServicios.setBackground(new java.awt.Color(0, 153, 255));
         btnGestionServicios.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -69,6 +87,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
                 btnGestionServiciosActionPerformed(evt);
             }
         });
+        jPanel1.add(btnGestionServicios, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 300, 100));
 
         btnGestionReservaciones.setBackground(new java.awt.Color(0, 102, 153));
         btnGestionReservaciones.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -79,6 +98,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
                 btnGestionReservacionesActionPerformed(evt);
             }
         });
+        jPanel1.add(btnGestionReservaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 400, 300, 100));
 
         jButton5.setBackground(new java.awt.Color(0, 102, 102));
         jButton5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -89,41 +109,29 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 510, 300, 100));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Adobe Express - file (2).png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnGestionReservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGestionServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGestionEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGestionClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnGestionClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnGestionEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnGestionServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnGestionReservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(99, 99, 99)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -200,5 +208,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblSistemaGestionDeReservas;
     // End of variables declaration//GEN-END:variables
 }

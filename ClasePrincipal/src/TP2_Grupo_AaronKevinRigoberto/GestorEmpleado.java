@@ -44,7 +44,7 @@ public class GestorEmpleado {
     return false;
 }
     
-    public static boolean modificarServicio(String id, String nombre,String especialidad,int telefono){
+    public static boolean modificarEmpleado(String id, String nombre,String especialidad,int telefono){
     Empleado empleado = buscarPorID(id);
         if (empleado != null) {
             

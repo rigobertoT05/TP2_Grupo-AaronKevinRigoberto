@@ -378,23 +378,21 @@ public class GestionDeServicios extends javax.swing.JFrame {
     String id = txtIDServicio.getText().trim();
     String nombre = txtNombreServicio.getText().trim();
     String selccionDuracion = (String) cmbDuracion.getSelectedItem();
-    
+    double costoBase; int duracion;
+    // validar ID unico
     if (GestorServicio.existeID(id)) {
         JOptionPane.showMessageDialog(this,
                 "El identificador ya existe. Ingrese uno diferente.",
                 "ID duplicado",
                 JOptionPane.WARNING_MESSAGE);return;}
-    
-    double costoBase;
+       
+        // condicionales
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El ID no puede estar vación.");
-        return;}
-        
+        return;} 
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El nombre no puede estar vacío.");
         return;}
-        
-        int duracion;
         if (selccionDuracion.contains("min")) {
         duracion = Integer.parseInt(selccionDuracion.replaceAll("[^0-9]", ""));
          } else {
@@ -406,7 +404,6 @@ public class GestionDeServicios extends javax.swing.JFrame {
         return; }
         
         try {
-            
             costoBase = Double.parseDouble(txtCostoBase.getText());
             if (costoBase <= 0) {
                 JOptionPane.showMessageDialog(this,"El costo debe ser mayor que 0.");
