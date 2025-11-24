@@ -1,6 +1,7 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,6 +13,7 @@ public class GestionDeClientes extends javax.swing.JFrame {
 
   private PanelMenuPrincipal menu;
   private DefaultTableModel modeloTabla;
+  ArrayList<Cliente> listaClientes;
   
     public GestionDeClientes(PanelMenuPrincipal menu) {
         initComponents();
@@ -56,7 +58,19 @@ private void cargarDatosTabla() {
         txtBuscar.setText("");
         txtID.setEditable(true);
     }
+   private void refrescarTabla() {
 
+    modeloTabla.setRowCount(0);
+
+    for (Cliente cliente : GestorCliente.getCLiente()) {
+        modeloTabla.addRow(new Object[]{
+            cliente.getCorreoElectronico(),
+            cliente.getNombre(),
+            cliente.getNumeroTelefono(),
+            cliente.getCorreoElectronico()
+        });
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -359,50 +373,12 @@ private void cargarDatosTabla() {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
        
-     try {
-            // Validaciones
-            if (txtID.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() ||
-                txtTelefono.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
-                return;
-            }
-
-            int id = Integer.parseInt(txtID.getText().trim());
-            String nombre = txtNombre.getText().trim();
-            int telefono = Integer.parseInt(txtTelefono.getText().trim());
-            String email = txtEmail.getText().trim();
-
-            // Validar email
-            if (!email.contains("@")) {
-                JOptionPane.showMessageDialog(this, "Email inválido");
-                return;
-            }
-
-            // Validar ID único
-            for (Cliente c : GestorDatos.getInstancia().clientes) {
-                if (c.getIdentificadorUnico() == id) {
-                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con ese ID");
-                    return;
-                }
-            }
-
-            Cliente nuevoCliente = new Cliente(id, nombre, telefono, email);
-            GestorDatos.getInstancia().clientes.add(nuevoCliente);
-            GestorDatos.getInstancia().guardarDatos();
-            
-            JOptionPane.showMessageDialog(this, "Cliente agregado exitosamente");
-            limpiarCampos();
-            cargarDatosTabla();
-            
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "ID y Teléfono deben ser números");
-        }
-    
+     
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-         cargarDatosTabla();
+        refrescarTabla();        
         txtBuscar.setText("");
     }
 
@@ -437,30 +413,7 @@ private void cargarDatosTabla() {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         
-        int fila = tblMostrarDatos.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
-            return;
-        }
-
-        int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de eliminar este cliente?", 
-            "Confirmar eliminación", 
-            JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            try {
-                int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
-                GestorDatos.getInstancia().clientes.removeIf(c -> c.getIdentificadorUnico() == id);
-                GestorDatos.getInstancia().guardarDatos();
-                
-                JOptionPane.showMessageDialog(this, "Cliente eliminado exitosamente");
-                limpiarCampos();
-                cargarDatosTabla();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
-            }
-        }
+      
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -478,13 +431,20 @@ private void cargarDatosTabla() {
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
-                int id = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
-                GestorDatos.getInstancia().clientes.removeIf(c -> c.getIdentificadorUnico() == id);
-                GestorDatos.getInstancia().guardarDatos();
-                
-                JOptionPane.showMessageDialog(this, "Cliente eliminado exitosamente");
+               String id = txtID.getText();
+
+    boolean ok = GestorCliente.eliminarCliente(id);
+
+    if (ok) {
+        JOptionPane.showMessageDialog(this, "Servicio eliminado.");
+        refrescarTabla();
+    } else {
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
+    }
+
+
                 limpiarCampos();
-                cargarDatosTabla();
+                refrescarTabla();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
             }

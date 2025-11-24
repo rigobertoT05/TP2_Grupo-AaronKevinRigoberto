@@ -7,32 +7,27 @@ import java.time.LocalDateTime;
 public class Cliente implements Serializable {
     
     // Atributos de la clase Cliente
-    private int identificadorUnico, numeroTelefono;
+    private String identificadorUnico;
+    private int numeroTelefono;
     private String nombre, correoElectronico;
+    
+//constructor
 
-    public Cliente(int identificadorUnico, String nombre, int numeroTelefono, String correoElectronico) {
+    public Cliente(String identificadorUnico, int numeroTelefono, String nombre, String correoElectronico) {
         this.identificadorUnico = identificadorUnico;
-        this.nombre = nombre;
         this.numeroTelefono = numeroTelefono;
+        this.nombre = nombre;
         this.correoElectronico = correoElectronico;
     }
-    
-    @Override public String toString() { return nombre; }
-    
-    public int getIdentificadorUnico() {
+
+ //get and set 
+
+    public String getIdentificadorUnico() {
         return identificadorUnico;
     }
 
-    public void setIdentificadorUnico(int identificadorUnico) {
+    public void setIdentificadorUnico(String identificadorUnico) {
         this.identificadorUnico = identificadorUnico;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public int getNumeroTelefono() {
@@ -43,6 +38,14 @@ public class Cliente implements Serializable {
         this.numeroTelefono = numeroTelefono;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getCorreoElectronico() {
         return correoElectronico;
     }
@@ -50,6 +53,7 @@ public class Cliente implements Serializable {
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
     }
+ 
     
     
     
