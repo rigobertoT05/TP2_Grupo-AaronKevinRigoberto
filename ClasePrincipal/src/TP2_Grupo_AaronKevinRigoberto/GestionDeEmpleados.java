@@ -1,6 +1,7 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
+import com.sun.source.tree.BreakTree;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
@@ -12,12 +13,26 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     
     DefaultTableModel modelo;
     private PanelMenuPrincipal menu;
+    private DefaultTableModel modeloTabla;
     public GestionDeEmpleados(PanelMenuPrincipal menu) {
         initComponents();
         configurarTabla();
         this.menu = menu;
     }
     
+     private void refrescarTabla() {
+
+    modeloTabla.setRowCount(0);
+   
+    /*for (Empleado empleado : listaEmpleado) {
+        modeloTabla.addRow(new Object[]{
+            empleado.getIdentificador(),
+            empleado.getNombre(),
+            empleado.getNumeroTelefono(),
+            empleado.getEspecialidad()
+        });
+    }*/
+}
     private void configurarTabla() {
     modelo = new DefaultTableModel();
         modelo.addColumn("ID");
@@ -285,78 +300,75 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
       
-     // 1. Capturar datos
-    String id = txtID.getText();
-    String nombre = txtNombreCompleto.getText();
-    String tel = txtTelefono.getText();
-    String esp = txtEspecialidad.getText();
 
-    // 2. Validar que no estén vacíos
-    if(id.isEmpty() || nombre.isEmpty() || tel.isEmpty() || esp.isEmpty()){
+    String id = txtID.getText().trim();
+    String nombre = txtNombreCompleto.getText().trim();
+    int telefono = Integer.parseInt(txtTelefono.getText());
+    String espcialidad = txtEspecialidad.getText().trim();
+
+    
+    if(id.isEmpty() || nombre.isEmpty() || espcialidad.isEmpty()){
         JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
         return;
     }
-
-    // 3. Crear objeto y guardar en el Singleton (GestorDatos)
-   // Empleado nuevoEmp = new Empleado(Identificador,nombre,Especialidad,NumeroTelefono); // Ajusta el orden según tu constructor
-    //GestorDatos.getInstancia().empleados.add(nuevoEmp);
-
-    // 4. Feedback y Limpieza
+    
+    Empleado listaEmpleado;
+    listaEmpleado = new Empleado(id,nombre,espcialidad,telefono);
+    GestorDatos.getInstancia().empleados.add(listaEmpleado);
     JOptionPane.showMessageDialog(this, "Empleado agregado con exito.");
     limpiarCampos();
-    // Opcional: btnListarActionPerformed(evt); // Para que se actualice la tabla sola
+     Opcional: btnListarActionPerformed(evt); 
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        
-    // 1. Limpiar la tabla actual para no duplicar datos
-    modelo.setRowCount(0);
-
-    // 2. Obtener la lista del Gestor
-    ArrayList<Empleado> lista = GestorDatos.getInstancia().empleados;
-
-    // 3. Recorrer y agregar filas
-    for (Empleado emp : lista) {
-        // Asegúrate de tener getters en tu clase Empleado
-        Object[] fila = { 
-            emp.getIdentificador(), 
-            emp.getNombre(), 
-            emp.getNumeroTelefono(), // Ojo: Revisa si tu atributo es telefono o numeroTelefono
-            emp.getEspecialidad() 
-        };
-        modelo.addRow(fila);
-    }
-        
+    refrescarTabla();
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-    
-    int fila = tblEmpleados.getSelectedRow();
-    
-    if (fila >= 0) {
-        // 1. Actualizar el objeto en el ArrayList
-        // Asumimos que el orden de la tabla es el mismo que el del ArrayList
-        Empleado emp = GestorDatos.getInstancia().empleados.get(fila);
-        
-        emp.setNombre(txtNombreCompleto.getText());
-        emp.setEspecialidad(txtEspecialidad.getText());
-        emp.setNumeroTelefono(txtTelefono.getText());
-        
-        // El ID usualmente no se modifica
-        
-        // 2. Actualizar visualmente la tabla
-        modelo.setValueAt(txtNombreCompleto.getText(), fila, 1);
-        modelo.setValueAt(txtTelefono.getText(), fila, 2);
-        modelo.setValueAt(txtEspecialidad.getText(), fila, 3);
-        
-        JOptionPane.showMessageDialog(this, "Empleado modificado.");
-        limpiarCampos();
-        txtID.setEditable(true); // Reactivar ID para nuevas inserciones
-    } else {
-        JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla primero.");
+    String id = txtID.getText().trim();
+    String nombre = txtNombreCompleto.getText().trim();
+    int telefono = Integer.parseInt(txtTelefono.getText());
+    String espcialidad = txtEspecialidad.getText().trim();
+
+    if (id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un ID.");
+        return;
     }
-    
+    // Validar que el Empleado exista
+        Empleado empleado = GestorEmpleado.buscarPorID(id);
+    if (empleado == null) {
+        JOptionPane.showMessageDialog(this,
+                "No existe un empleado con ese identificador.",
+                "Modificar servicio",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    // Validar nombre
+    if (nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
+        return;
+    }
+    // validar id, nombre y especialidad
+        if (id.isBlank() || nombre.isBlank() || espcialidad.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Rellene todos los campos solicitados");
+        }
+    // Modificar usando el Gestor Empleado
+    boolean ok = GestorEmpleado.modificarServicio(id, nombre, espcialidad, telefono );
+
+    if (ok) {
+        JOptionPane.showMessageDialog(this,
+                "Empleado modificado correctamente.",
+                "Modificar Empleado",
+                JOptionPane.INFORMATION_MESSAGE);
+        refrescarTabla(); // 👈 IMPORTANTE
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "No se pudo modificar el Empleado.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void tblEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpleadosMouseClicked

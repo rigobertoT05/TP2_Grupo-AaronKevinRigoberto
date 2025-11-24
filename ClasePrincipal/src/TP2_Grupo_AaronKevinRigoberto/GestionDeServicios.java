@@ -1,6 +1,7 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
+import TP2_Grupo_AaronKevinRigoberto.GestorServicio;
 import javax.swing.JOptionPane;
 
 
@@ -25,8 +26,42 @@ public class GestionDeServicios extends javax.swing.JFrame {
         this.menu = menu;
         configurarTabla();
         configurarComboDuracion();
+        agregarEventoSeleccionTabla();
 
     }
+    
+    private void agregarEventoSeleccionTabla() {
+        
+    tblMostrarDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+
+            int fila = tblMostrarDatos.getSelectedRow();
+
+            if (fila >= 0) {
+
+                // ID
+                txtIDServicio.setText(
+                    modeloTabla.getValueAt(fila, 0).toString()
+                );
+
+                // Nombre
+                txtNombreServicio.setText(
+                    modeloTabla.getValueAt(fila, 1).toString()
+                );
+
+                // Duración
+                String dur = modeloTabla.getValueAt(fila, 2).toString();
+                cmbDuracion.setSelectedItem(dur);
+
+                // Costo → quitarle "₡"
+                String costo = modeloTabla.getValueAt(fila, 3).toString();
+                costo = costo.replace("₡", "");
+                txtCostoBase.setText(costo.trim());
+            }
+        }
+    });
+}
     private void configurarComboDuracion() {
 
     cmbDuracion.removeAllItems();
@@ -52,13 +87,12 @@ public class GestionDeServicios extends javax.swing.JFrame {
     
     private void configurarTabla() {
         
-        modeloTabla = new DefaultTableModel(
-            new Object[]{"ID", "Nombre", "Duracion (min)", "Costo"}, 0
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;}};
- tblMostrarDatos.setModel(modeloTabla);}
+        modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("ID");
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Duracion (min/h)");
+        modeloTabla.addColumn("Costo");
+        tblMostrarDatos.setModel(modeloTabla);}
     
     private void refrescarTabla() {
 
@@ -96,7 +130,6 @@ public class GestionDeServicios extends javax.swing.JFrame {
         txtIDServicio = new javax.swing.JTextField();
         txtNombreServicio = new javax.swing.JTextField();
         txtCostoBase = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
         lblDuración = new javax.swing.JLabel();
         cmbTipoDeServicio = new javax.swing.JComboBox<>();
@@ -141,13 +174,6 @@ public class GestionDeServicios extends javax.swing.JFrame {
             }
         });
 
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-
         btnListar.setText("Listar");
         btnListar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +181,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
             }
         });
 
-        lblDuración.setText("Duracion (minutos):");
+        lblDuración.setText("Duracion (minutos/horas):");
 
         cmbTipoDeServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Opcion", "Trantamiento Capilar", "Corte de Cabello", "Manicure" }));
 
@@ -174,16 +200,17 @@ public class GestionDeServicios extends javax.swing.JFrame {
                             .addComponent(txtCostoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDuración)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblIDServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblCostoBase)
-                                    .addComponent(txtIDServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(cmbDuracion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(119, 119, 119)
-                                        .addComponent(btnBuscar))
-                                    .addComponent(txtNombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(33, 33, 33)
+                                        .addGap(228, 228, 228))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(lblIDServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblCostoBase)
+                                            .addComponent(txtIDServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtNombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(33, 33, 33)))
                                 .addComponent(btnListar))
                             .addComponent(lblNombreServicio)
                             .addComponent(cmbTipoDeServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -211,9 +238,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(88, 88, 88)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnBuscar)
-                            .addComponent(btnListar))
+                        .addComponent(btnListar)
                         .addGap(34, 34, 34))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblCostoBase)
@@ -345,10 +370,6 @@ public class GestionDeServicios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreServicioActionPerformed
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
        refrescarTabla();     // TODO add your handling code here:
     }//GEN-LAST:event_btnListarActionPerformed
@@ -357,6 +378,13 @@ public class GestionDeServicios extends javax.swing.JFrame {
     String id = txtIDServicio.getText().trim();
     String nombre = txtNombreServicio.getText().trim();
     String selccionDuracion = (String) cmbDuracion.getSelectedItem();
+    
+    if (GestorServicio.existeID(id)) {
+        JOptionPane.showMessageDialog(this,
+                "El identificador ya existe. Ingrese uno diferente.",
+                "ID duplicado",
+                JOptionPane.WARNING_MESSAGE);return;}
+    
     double costoBase;
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El ID no puede estar vación.");
@@ -365,13 +393,13 @@ public class GestionDeServicios extends javax.swing.JFrame {
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El nombre no puede estar vacío.");
         return;}
+        
         int duracion;
-        if (selccionDuracion.endsWith("min")) {
-                duracion = Integer.parseInt(selccionDuracion.replace(" min", "").trim());
-        }
-        else {
-            int horas = Integer.parseInt(selccionDuracion.replace(" h", "").trim());
-            duracion = horas * 60;
+        if (selccionDuracion.contains("min")) {
+        duracion = Integer.parseInt(selccionDuracion.replaceAll("[^0-9]", ""));
+         } else {
+        int horas = Integer.parseInt(selccionDuracion.replaceAll("[^0-9]", ""));
+        duracion = horas * 60;
         }
         if (duracion <= 0) {
             JOptionPane.showMessageDialog(this,"La duración debe ser mayor que 0.");
@@ -415,11 +443,95 @@ public class GestionDeServicios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
+                                       
+    String id = txtIDServicio.getText().trim();
+    String nombre = txtNombreServicio.getText().trim();
+    String seleccionDuracion = (String) cmbDuracion.getSelectedItem();
+
+    if (id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un ID.");
+        return;
+    }
+    // Validar que el servicio exista
+    Servicio servicio = GestorServicio.buscarPorID(id);
+    if (servicio == null) {
+        JOptionPane.showMessageDialog(this,
+                "No existe un servicio con ese identificador.",
+                "Modificar servicio",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    // Validar nombre
+    if (nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
+        return;
+    }
+    // Procesar duración
+    int duracion;
+    try {
+        if (seleccionDuracion.endsWith("min")) {
+            duracion = Integer.parseInt(seleccionDuracion.replace(" min", "").trim());
+        } else if (seleccionDuracion.endsWith("h")) {
+            int horas = Integer.parseInt(seleccionDuracion.replace(" h", "").trim());
+            duracion = horas * 60;
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Formato de duración inválido.",
+                    "Error en duración",
+                    JOptionPane.ERROR_MESSAGE);return;}
+    } catch (NumberFormatException ex) {  JOptionPane.showMessageDialog(this, "Duración inválida. Debe ser un número.","Error en duración",JOptionPane.ERROR_MESSAGE);return;
+    }
+
+    if (duracion <= 0) {JOptionPane.showMessageDialog(this,"La duración debe ser mayor a 0.","Duración inválida",JOptionPane.ERROR_MESSAGE);  return;
+   }
+
+    // Validar costo
+    double costo;
+    try {
+        costo = Double.parseDouble(txtCostoBase.getText().trim());
+        if (costo <= 0) {
+            JOptionPane.showMessageDialog(this, "El costo debe ser mayor a 0.");
+            return;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Ingrese un costo válido.");
+        return;
+    }
+
+    // Modificar usando el Gestor
+    boolean ok = GestorServicio.modificarServicio(id, nombre, duracion, costo);
+
+    if (ok) {
+        JOptionPane.showMessageDialog(this,
+                "Servicio modificado correctamente.",
+                "Modificar servicio",
+                JOptionPane.INFORMATION_MESSAGE);
+        refrescarTabla(); // 👈 IMPORTANTE
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "No se pudo modificar el servicio.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+    
+    String id = txtIDServicio.getText();
+
+    boolean ok = GestorServicio.eliminarServicio(id);
+
+    if (ok) {
+        JOptionPane.showMessageDialog(this, "Servicio eliminado.");
+        refrescarTabla();
+    } else {
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
+    }
+
+
+        
+// TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
@@ -461,7 +573,6 @@ public class GestionDeServicios extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollTabla;
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnModificar;

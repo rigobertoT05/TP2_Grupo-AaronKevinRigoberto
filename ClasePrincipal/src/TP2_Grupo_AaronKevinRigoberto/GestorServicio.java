@@ -35,7 +35,14 @@ public class GestorServicio {
      return false;    
     }
     
-    
+    public static boolean existeID(String id) {
+    for (Servicio servicio : listaServicios) {
+        if (servicio.getIdentificador().equalsIgnoreCase(id)) {
+            return true;
+        }
+    }
+    return false;
+}
     
     public static boolean modificarServicio(String id, String nombre,int duracion, double costo){
     Servicio servicio = buscarPorID(id);

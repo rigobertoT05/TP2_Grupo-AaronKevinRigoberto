@@ -129,18 +129,21 @@
                                   <Component id="txtCostoBase" min="-2" pref="150" max="-2" attributes="0"/>
                                   <Component id="lblDuración" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="lblIDServicio" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
-                                          <Component id="lblCostoBase" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtIDServicio" alignment="0" min="-2" pref="301" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="1" attributes="0">
                                               <Component id="cmbDuracion" max="32767" attributes="0"/>
-                                              <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
-                                              <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="228" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="txtNombreServicio" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="lblIDServicio" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
+                                                  <Component id="lblCostoBase" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtIDServicio" alignment="0" min="-2" pref="301" max="-2" attributes="0"/>
+                                                  <Component id="txtNombreServicio" alignment="0" min="-2" pref="195" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                       <Component id="btnListar" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="lblNombreServicio" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -174,10 +177,7 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnListar" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="btnListar" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -239,14 +239,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtCostoBase">
             </Component>
-            <Component class="javax.swing.JButton" name="btnBuscar">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="btnListar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Listar"/>
@@ -257,7 +249,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lblDuraci&#xf3;n">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Duracion (minutos):"/>
+                <Property name="text" type="java.lang.String" value="Duracion (minutos/horas):"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cmbTipoDeServicio">

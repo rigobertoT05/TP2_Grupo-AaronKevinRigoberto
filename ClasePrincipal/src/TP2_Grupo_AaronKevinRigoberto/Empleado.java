@@ -6,12 +6,12 @@ import java.io.Serializable;
 public class Empleado implements Serializable {
     // Atributos de la clase Empleado
     
- private String identificador;
- private String nombre;
- private String especialidad;
- private String numeroTelefono;
+ protected String identificador;
+ protected String nombre;
+ protected String especialidad;
+ protected int numeroTelefono;
 
-    public Empleado(String identificador,String nombre, String especialidad, String numeroTelefono) {
+    public Empleado(String identificador,String nombre, String especialidad, int numeroTelefono) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.especialidad = especialidad;
@@ -42,11 +42,11 @@ public class Empleado implements Serializable {
         this.especialidad = especialidad;
     }
 
-    public String getNumeroTelefono() {
+    public int getNumeroTelefono() {
         return numeroTelefono;
     }
 
-    public void setNumeroTelefono(String numeroTelefono) {
+    public void setNumeroTelefono(int numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
     }
     @Override
