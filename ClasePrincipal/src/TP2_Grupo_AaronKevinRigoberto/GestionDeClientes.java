@@ -436,6 +436,7 @@ private void cargarDatosTabla() {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        
         int fila = tblMostrarDatos.getSelectedRow();
         if (fila < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
