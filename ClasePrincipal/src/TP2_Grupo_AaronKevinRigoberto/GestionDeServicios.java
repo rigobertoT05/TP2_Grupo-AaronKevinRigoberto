@@ -1,10 +1,6 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
-/**
- *
- * @author kevin
- */
 public class GestionDeServicios extends javax.swing.JFrame {
 
      private PanelMenuPrincipal menu;
