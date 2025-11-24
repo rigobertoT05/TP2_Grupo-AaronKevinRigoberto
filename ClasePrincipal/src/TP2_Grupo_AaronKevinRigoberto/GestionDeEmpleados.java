@@ -270,7 +270,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
 
     private void btnDevolverseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverseActionPerformed
         
-        PanelMenuServicios menu = new PanelMenuServicios();
+      //  PanelMenuServicios menu = new PanelMenuServicios();
         menu.setVisible(true);
         this.dispose();
         
@@ -291,8 +291,8 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     }
 
     // 3. Crear objeto y guardar en el Singleton (GestorDatos)
-    Empleado nuevoEmp = new Empleado(Identificador,nombre,Especialidad,NumeroTelefono); // Ajusta el orden según tu constructor
-    GestorDatos.getInstancia().empleados.add(nuevoEmp);
+   // Empleado nuevoEmp = new Empleado(Identificador,nombre,Especialidad,NumeroTelefono); // Ajusta el orden según tu constructor
+    //GestorDatos.getInstancia().empleados.add(nuevoEmp);
 
     // 4. Feedback y Limpieza
     JOptionPane.showMessageDialog(this, "Empleado agregado con exito.");
@@ -333,7 +333,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         Empleado emp = GestorDatos.getInstancia().empleados.get(fila);
         
         emp.setNombre(txtNombreCompleto.getText());
-        emp.setNumeroTelefono(txtTelefono.getText());
+      //  emp.setNumeroTelefono(txtTelefono.getText());
         emp.setEspecialidad(txtEspecialidad.getText());
         // El ID usualmente no se modifica
         
