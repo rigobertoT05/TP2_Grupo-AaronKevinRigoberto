@@ -17,6 +17,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     DefaultTableModel modelo;
     private PanelMenuPrincipal menu;
     private DefaultTableModel modeloTabla;
+    ArrayList<Empleado> listaEmpleados;
     public GestionDeEmpleados(PanelMenuPrincipal menu) {
         initComponents();
         configurarTabla();
@@ -68,6 +69,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         txtID = new javax.swing.JTextField();
+        cmbEspecialista = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMostrarDatosEmpleados = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
@@ -140,6 +142,8 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
             }
         });
 
+        cmbEspecialista.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione opcion", "Manicure", "Corte de cabello", "Tratamientos Capilares" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -167,7 +171,8 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                                     .addComponent(txtTelefono)
                                     .addComponent(txtID))
                                 .addGap(33, 33, 33)
-                                .addComponent(btnListar)))))
+                                .addComponent(btnListar))
+                            .addComponent(cmbEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -189,7 +194,9 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                 .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
-                .addGap(40, 40, 40)
+                .addGap(8, 8, 8)
+                .addComponent(cmbEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -380,36 +387,67 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
     refrescarTabla();
 
-
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String id = id = txtID.getText().trim();
         String nombre = nombre = txtNombre.getText().trim(); 
-        String especialidad;
-        int telefono = Integer.parseInt(txtTelefono.getText().trim());
+        String especialidad = (String) cmbEspecialista.getSelectedItem();
+        
         
             // Validaciones
-            if (id.isBlank() || nombre.isBlank()){
+            if (id.isBlank() || nombre.isBlank() || especialidad.equalsIgnoreCase("Seleccione opcion")){
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
                 return;
-            }
+            } 
             // Validar ID único
             if (GestorEmpleado.existeID(id)) {
               JOptionPane.showMessageDialog(this,
           "El identificador ya existe, ingrese un distntos.");
               return; }
             
-             {
-                
-            }
-
+            // validar tamaño de numero
+            String numero = txtTelefono.getText().trim();
+            if (numero.length() != 8) {
+            JOptionPane.showMessageDialog(this,"El numero debe de tener 8 digitos"); return;
+        } int telefono = Integer.parseInt(numero);
+            
+         Empleado nuevoEmpleado;
+         nuevoEmpleado = new Empleado(id,nombre,especialidad,telefono);
+        
+        
+          JOptionPane.showMessageDialog(this, "Empleado agregado corecamente");
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-     //boolean ok = GestorEmpleado.modificarEmpleado(id, nombre, especialidad, telefono);
+        String id = txtID.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String especialidad = (String) cmbEspecialista.getSelectedItem();
+        // Validar que el empleado exista
+    Empleado empleado = GestorEmpleado.buscarPorID(id);
+    if (empleado == null) {
+        JOptionPane.showMessageDialog(this,
+                "No existe un servicio con ese identificador.",
+                "Modificar servicio",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+        // Validar nombre
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
+            return;}
+         // validar tamaño de numero
+            String numero = txtTelefono.getText().trim();
+            if (numero.length() != 8) {
+            JOptionPane.showMessageDialog(this,"El numero debe de tener 8 digitos"); return;
+        } int telefono = Integer.parseInt(numero);
+        //validar especialidad
+        if (especialidad.equalsIgnoreCase("Seleccione opcion")) {
+            JOptionPane.showMessageDialog(this,"Selecione una opcion de especialista"); return;}
+    
+        boolean EmpleadoEcnontrado = GestorEmpleado.modificarEmpleado(id, nombre, especialidad, telefono);
 
-    /*if (ok) {
+    if (EmpleadoEcnontrado) {
         JOptionPane.showMessageDialog(this,
                 "Servicio modificado correctamente.",
                 "Modificar servicio",
@@ -421,7 +459,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
     }
-*/
+
                                                 
 
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -492,6 +530,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> cmbEspecialista;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

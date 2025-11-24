@@ -163,6 +163,7 @@
                                           <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                           <Component id="btnListar" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <Component id="cmbEspecialista" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -189,7 +190,9 @@
                           <Component id="txtTelefono" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                          <Component id="cmbEspecialista" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -297,6 +300,21 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIDActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cmbEspecialista">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="4">
+                        <StringItem index="0" value="Seleccione opcion"/>
+                        <StringItem index="1" value="Manicure"/>
+                        <StringItem index="2" value="Corte de cabello"/>
+                        <StringItem index="3" value="Tratamientos Capilares"/>
+                      </StringArray>
+                    </Property>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
