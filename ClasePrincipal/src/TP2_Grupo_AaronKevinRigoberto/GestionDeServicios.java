@@ -55,7 +55,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
         lblTipoDeServicio = new javax.swing.JLabel();
         txtIDServicio = new javax.swing.JTextField();
         txtNombreServicio = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
+        txtCostoBase = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
         lblDuración = new javax.swing.JLabel();
@@ -138,12 +138,12 @@ public class GestionDeServicios extends javax.swing.JFrame {
                                     .addComponent(lblIDServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblCostoBase)
                                     .addComponent(lblTipoDeServicio)
-                                    .addComponent(txtNombreServicio, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                                    .addComponent(txtNombreServicio)
                                     .addComponent(txtIDServicio)
-                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCostoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(SpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(SpinnerDuracion, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                        .addGap(75, 75, 75)
                                         .addComponent(btnBuscar)))
                                 .addGap(33, 33, 33)
                                 .addComponent(btnListar))
@@ -166,14 +166,14 @@ public class GestionDeServicios extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(lblCostoBase)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCostoBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblTipoDeServicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmbTipoDeServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnBuscar)
                             .addComponent(btnListar))
@@ -181,9 +181,9 @@ public class GestionDeServicios extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblDuración)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(SpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(23, Short.MAX_VALUE))))
         );
 
         btnAgregar.setText("Agregar");
@@ -287,7 +287,9 @@ public class GestionDeServicios extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 620, Short.MAX_VALUE))
         );
 
         pack();
@@ -310,10 +312,10 @@ public class GestionDeServicios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-    String id = txtIDServicio.getText();
-    String nombre = txtNombreServicio.getText();
+    String id = txtIDServicio.getText().trim();
+    String nombre = txtNombreServicio.getText().trim();
     int duracion = (int) SpinnerDuracion.getValue();
-    
+    double costoBase;
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(this,"El ID no puede estar vación.");
         return;}
@@ -326,17 +328,34 @@ public class GestionDeServicios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"La duración debe ser mayor que 0.");
         return; }
         
-        double costo = 0;
-        
         try {
-            double costoBase = Double.parseDouble((String) SpinnerDuracion.getValue());
-            if (costo <= 0) {
+            
+            costoBase = Double.parseDouble(txtCostoBase.getText());
+            if (costoBase <= 0) {
                 JOptionPane.showMessageDialog(this,"El costo debe ser mayor que 0.");
             }
         } catch (NumberFormatException e) { JOptionPane.showMessageDialog(this,
                 "Ingrese un costo válido. "); return ;}
-       
         
+        if (GestorServicio.buscarPorID(id) != null) {
+            JOptionPane.showMessageDialog(this,"Ya existe un servicio con ese ID."); return;
+        }
+        String tipo = cmbTipoDeServicio.getSelectedItem().toString();
+        Servicio nuevoServicio;
+        
+            switch (tipo) {
+            case "Corte de cabello":
+                nuevoServicio = new CorteCabello(id, nombre,duracion,costoBase,false); break;
+            case "Trantamiento Capilar":
+                nuevoServicio = new TratamientoCapilar(tipo, nombre, duracion, costoBase); break;
+            case "Manicure": 
+                nuevoServicio = new TratamientoCapilar(tipo, nombre, duracion, costoBase); break;
+            
+            default: JOptionPane.showMessageDialog(this,"Tipo no reconocido."); return;}
+       
+        GestorServicio.agregarServicio(nuevoServicio);
+        
+        JOptionPane.showMessageDialog(this, "Servicio agregado corecamente");
         
      
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -410,9 +429,9 @@ public class GestionDeServicios extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombreServicio;
     private javax.swing.JLabel lblTipoDeServicio;
     private javax.swing.JTable tblMostrarDatos;
+    private javax.swing.JTextField txtCostoBase;
     private javax.swing.JTextField txtIDServicio;
     private javax.swing.JTextField txtNombreServicio;
-    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
  

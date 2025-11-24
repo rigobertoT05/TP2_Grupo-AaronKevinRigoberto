@@ -24,12 +24,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel3" alignment="0" min="-2" max="-2" attributes="0"/>
+          <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel3" pref="620" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -127,12 +130,12 @@
                                           <Component id="lblIDServicio" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
                                           <Component id="lblCostoBase" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblTipoDeServicio" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtNombreServicio" alignment="0" pref="301" max="32767" attributes="0"/>
+                                          <Component id="txtNombreServicio" alignment="0" max="32767" attributes="0"/>
                                           <Component id="txtIDServicio" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtTelefono" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                          <Component id="txtCostoBase" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                                           <Group type="102" alignment="1" attributes="0">
-                                              <Component id="SpinnerDuracion" min="-2" pref="150" max="-2" attributes="0"/>
-                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="SpinnerDuracion" pref="150" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                                               <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -163,14 +166,14 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="lblCostoBase" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtTelefono" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCostoBase" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="lblTipoDeServicio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="cmbTipoDeServicio" min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace pref="28" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnListar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -180,9 +183,9 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lblDuración" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="SpinnerDuracion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="23" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -231,7 +234,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombreServicioActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtTelefono">
+            <Component class="javax.swing.JTextField" name="txtCostoBase">
             </Component>
             <Component class="javax.swing.JButton" name="btnBuscar">
               <Properties>
