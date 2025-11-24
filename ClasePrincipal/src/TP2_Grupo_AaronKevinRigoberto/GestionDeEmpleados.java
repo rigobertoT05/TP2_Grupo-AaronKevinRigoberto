@@ -63,7 +63,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
         txtTelefono = new javax.swing.JTextField();
         txtID = new javax.swing.JTextField();
@@ -102,13 +101,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
-            }
-        });
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -152,7 +144,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10)
                                     .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtTelefono)
                                     .addComponent(txtID))
                                 .addGap(33, 33, 33)
@@ -182,9 +173,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(cmbEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBuscar)
-                    .addComponent(btnListar))
+                .addComponent(btnListar)
                 .addGap(34, 34, 34))
         );
 
@@ -325,37 +314,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-
-        String busqueda = txtBuscar.getText().trim().toLowerCase();
-        if (busqueda.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un nombre o teléfono para buscar");
-            return;
-        }
-
-        modeloTabla.setRowCount(0);
-        boolean encontrado = false;
-
-        for (Cliente c : GestorDatos.getInstancia().clientes) {
-            if (c.getNombre().toLowerCase().contains(busqueda) ||
-                String.valueOf(c.getNumeroTelefono()).contains(busqueda)) {
-                modeloTabla.addRow(new Object[]{
-                    c.getIdentificadorUnico(),
-                    c.getNombre(),
-                    c.getNumeroTelefono(),
-                    c.getCorreoElectronico()
-                });
-                encontrado = true;
-            }
-        }
-
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(this, "No se encontraron resultados");
-           // cargarDatosTabla();
-        }
-
-    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
     refrescarTabla();
@@ -498,7 +456,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnListar;
     private javax.swing.JButton btnModificar;
