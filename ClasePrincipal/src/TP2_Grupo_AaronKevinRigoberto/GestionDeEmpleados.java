@@ -1,6 +1,7 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
+import static TP2_Grupo_AaronKevinRigoberto.GestorEmpleado.listaEmpleado;
 import com.sun.source.tree.BreakTree;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
@@ -24,15 +25,13 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
 
     modeloTabla.setRowCount(0);
    
-    /*for (Empleado empleado : listaEmpleado) {
+    for (Empleado empleado : listaEmpleado) {
         modeloTabla.addRow(new Object[]{
             empleado.getIdentificador(),
             empleado.getNombre(),
             empleado.getNumeroTelefono(),
             empleado.getEspecialidad()
-        });
-    }*/
-}
+        });}}
     private void configurarTabla() {
     modelo = new DefaultTableModel();
         modelo.addColumn("ID");
