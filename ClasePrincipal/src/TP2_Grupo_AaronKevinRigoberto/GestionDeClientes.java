@@ -76,15 +76,19 @@ public class GestionDeClientes extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.black);
         jLabel1.setText("Datos del Cliente");
 
         jLabel2.setForeground(java.awt.Color.black);
         jLabel2.setText("ID");
 
+        jLabel3.setForeground(java.awt.Color.black);
         jLabel3.setText("Nombre completo");
 
+        jLabel5.setForeground(java.awt.Color.black);
         jLabel5.setText("Telefono:");
 
+        jLabel6.setForeground(java.awt.Color.black);
         jLabel6.setText("Email:");
 
         txtID.addActionListener(new java.awt.event.ActionListener() {
@@ -125,6 +129,7 @@ public class GestionDeClientes extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setForeground(java.awt.Color.black);
         jLabel7.setText("Buscar por nombre o telefono");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
