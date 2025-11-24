@@ -63,10 +63,8 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
-        jLabel11 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         txtID = new javax.swing.JTextField();
         cmbEspecialista = new javax.swing.JComboBox<>();
@@ -107,12 +105,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
             }
         });
 
-        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscarActionPerformed(evt);
-            }
-        });
-
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,9 +118,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                 btnListarActionPerformed(evt);
             }
         });
-
-        jLabel11.setForeground(java.awt.Color.black);
-        jLabel11.setText("Buscar por nombre o telefono");
 
         txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,18 +145,14 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lblNombreCompleto)
                                     .addComponent(lblID, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10)
-                                    .addComponent(txtNombre)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
-                                        .addComponent(btnBuscar))
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtTelefono)
                                     .addComponent(txtID))
                                 .addGap(33, 33, 33)
@@ -196,19 +181,11 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
                 .addComponent(jLabel10)
                 .addGap(8, 8, 8)
                 .addComponent(cmbEspecialista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel11)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnBuscar)
-                            .addComponent(btnListar))
-                        .addGap(34, 34, 34))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnListar))
+                .addGap(34, 34, 34))
         );
 
         tblMostrarDatosEmpleados.setModel(new javax.swing.table.DefaultTableModel(
@@ -349,10 +326,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarActionPerformed
-
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
         String busqueda = txtBuscar.getText().trim().toLowerCase();
@@ -468,7 +441,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
 
     String id = txtID.getText();
 
-    boolean ok = GestorServicio.eliminarServicio(id);
+    boolean ok = GestorEmpleado.eliminarEmpleado(id);
 
     if (ok) {
         JOptionPane.showMessageDialog(this, "Empleado eliminado.");
@@ -488,7 +461,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     txtID.setText("");
     txtNombre.setText("");
     txtTelefono.setText("");
-    //txtEspecialidad.setText("");
+    cmbEspecialista.setSelectedItem("Seleccione opcion");
     }
     /**
      * @param args the command line arguments
@@ -533,7 +506,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbEspecialista;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -543,7 +515,6 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     private javax.swing.JLabel lblID;
     private javax.swing.JLabel lblNombreCompleto;
     private javax.swing.JTable tblMostrarDatosEmpleados;
-    private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;

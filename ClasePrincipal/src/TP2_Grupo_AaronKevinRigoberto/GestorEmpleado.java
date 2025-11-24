@@ -14,7 +14,7 @@ import java.util.Set;
 public class GestorEmpleado {
     public static ArrayList<Empleado> listaEmpleado = new ArrayList<>();
 
-    public static void agregarServicio(Empleado Empleado){
+    public static void agregarEmpleado(Empleado Empleado){
         listaEmpleado.add(Empleado);
     }
     
@@ -27,7 +27,7 @@ public class GestorEmpleado {
         return null;
     }
     
-    public static boolean eliminarServicio(String id){
+    public static boolean eliminarEmpleado(String id){
      Empleado empleado = buscarPorID(id);
         if (empleado != null) {
             listaEmpleado.remove(empleado);
@@ -58,7 +58,7 @@ public class GestorEmpleado {
         return false;
     }
     
-    public static ArrayList<Empleado> getServicios(){
+    public static ArrayList<Empleado> getEmpleados(){
         return listaEmpleado;
     } 
 }
