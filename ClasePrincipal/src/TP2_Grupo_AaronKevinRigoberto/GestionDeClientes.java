@@ -446,6 +446,7 @@ public class GestionDeClientes extends javax.swing.JFrame {
         
         int fila = tblMostrarDatos.getSelectedRow();
         if (fila < 0) {
+            
             JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
             return;
         }

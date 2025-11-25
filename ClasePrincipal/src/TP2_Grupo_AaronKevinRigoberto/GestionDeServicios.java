@@ -5,6 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class GestionDeServicios extends javax.swing.JFrame {
         configurarTabla();
         configurarComboDuracion();
          configurarFechaHora();
+         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+         spnFechaHora.setEnabled(false);
     }
     
    private void configurarFechaHora() {
@@ -590,20 +593,32 @@ public class GestionDeServicios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-    
-    String id = txtIDServicio.getText();
+     int fila = tblMostrarDatos.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
+            return;}
+        String id = modeloTabla.getValueAt(fila, 0).toString();
 
-    boolean ok = gestorServicio.eliminarServicio(id);
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+        "¿Está seguro de eliminar este servicio?", 
+        "Confirmar eliminación", 
+        JOptionPane.YES_NO_OPTION);
 
-    if (ok) {
-        JOptionPane.showMessageDialog(this, "Servicio eliminado.");
-        refrescarTabla();
+       if (confirmacion == JOptionPane.YES_OPTION) {
+   
+        if (confirmacion == JOptionPane.YES_OPTION) {
+    GestorServicio gestorServicio = new GestorServicio(); // <<< Instancia
+    boolean eliminado = gestorServicio.eliminarServicio(id);
+
+    if (eliminado) {
+        JOptionPane.showMessageDialog(this, "Servicio eliminado correctamente.");
+        limpiarCampos();
+        refrescarTabla(); // si tienes un método para refrescar la tabla
     } else {
-        JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar el servicio.");
     }
-
-
-        
+        }
+       }
 // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
 
