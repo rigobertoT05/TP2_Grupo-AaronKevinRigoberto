@@ -439,7 +439,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         }
 
         int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de eliminar este cliente?", 
+            "¿Está seguro de eliminar este Empleado?", 
             "Confirmar eliminación", 
             JOptionPane.YES_NO_OPTION);
 
@@ -447,14 +447,14 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
             try {
                String id = modelo.getValueAt(fila, 0).toString();
 
-    boolean eliminado = GestorCliente.eliminarCliente(id);
+    boolean eliminado = GestorEmpleado.eliminarEmpleado(id);
 
     if (eliminado) {
-        JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
+        JOptionPane.showMessageDialog(this, "Empleado eliminado correctamente.");
         limpiarCampos();
         
     } else {
-        JOptionPane.showMessageDialog(this, "No se pudo eliminar cliente.");
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar eliminar Empleado.");
     }
                 limpiarCampos();
                

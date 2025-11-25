@@ -445,9 +445,10 @@ public class GestionDeClientes extends javax.swing.JFrame {
         String telefonoStr = txtTelefono.getText().trim();
         
         int fila = tblMostrarDatos.getSelectedRow();
-        if (fila < 0) {
+        if (fila < 1) {
             
             JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
+             JOptionPane.showMessageDialog(this, "Ingrese el ID que deesa modificar y rellena nuevamente los datos");
             return;
         }
 
