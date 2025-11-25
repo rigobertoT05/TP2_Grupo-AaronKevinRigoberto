@@ -62,7 +62,7 @@ private void cargarDatosTabla() {
 
     modeloTabla.setRowCount(0);
 
-    for (Cliente cliente : GestorCliente.getCLiente()) {
+    for (Cliente cliente : GestorCliente.getCliente()) {
         modeloTabla.addRow(new Object[]{
             cliente.getCorreoElectronico(),
             cliente.getNombre(),

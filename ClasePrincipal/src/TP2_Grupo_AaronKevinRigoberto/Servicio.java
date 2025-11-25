@@ -64,7 +64,12 @@ public abstract class Servicio implements Serializable {
         this.costo = costo;
     }
 
+    @Override
+    public String toString() {
+        return "Servicio{" + "identificador=" + identificador + ", nombre=" + nombre + ", duracionMinutos=" + duracionMinutos + ", costo=" + costo + ", fechaHora=" + fechaHora + '}';
+    }
 
+    
     // Método abstracto para polimorfismo: cada servicio calcula su descripción diferente
     public abstract String obtenerDetalleServicio();
 }

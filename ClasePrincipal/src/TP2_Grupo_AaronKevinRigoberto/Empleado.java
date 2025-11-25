@@ -49,9 +49,12 @@ public class Empleado implements Serializable {
     public void setNumeroTelefono(int numeroTelefono) {
         this.numeroTelefono = numeroTelefono;
     }
+
     @Override
     public String toString() {
-        return nombre + " - " + especialidad;
+        return "Empleado{" + "identificador=" + identificador + ", nombre=" + nombre + ", especialidad=" + especialidad + ", numeroTelefono=" + numeroTelefono + '}';
     }
+ 
+    
  
 }

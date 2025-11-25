@@ -88,7 +88,7 @@ public class GestorCliente {
         return false;
     }
    
-    public static ArrayList<Cliente> getCLiente(){
+    public static ArrayList<Cliente> getCliente(){
         return listaClientes;
     }
   

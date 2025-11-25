@@ -2,6 +2,7 @@
 package TP2_Grupo_AaronKevinRigoberto;
 
 
+import static TP2_Grupo_AaronKevinRigoberto.GestorCliente.listaClientes;
 import static TP2_Grupo_AaronKevinRigoberto.GestorEmpleado.listaEmpleado;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -21,18 +22,16 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     public GestionDeReservaciones(PanelMenuPrincipal menu) {
         initComponents();
         this.setLocationRelativeTo(null);
-        configurarTabla();
-        cmbCliente.setSelectedItem(GestorCliente.getCLiente());
-        cmbEmpleado.setSelectedItem(GestorEmpleado.getEmpleados());
-        cmbServicio.setSelectedItem(GestorServicio.getServicios());
-  
+        
+        cmbEstado = new javax.swing.JComboBox<>();
+        cmbEmpleado = new javax.swing.JComboBox<>();
+        cmbServicio = new javax.swing.JComboBox<>();
         this.menu = menu;
     }
     private void configurarTabla() {
         modelo = new DefaultTableModel();
         modelo.addColumn("ID Reserva");
-        modelo.addColumn("Cliente");
-        modelo.addColumn("Empleado");
+        modelo.addColumn("Cliente");        modelo.addColumn("Empleado");
         modelo.addColumn("Servicio");
         modelo.addColumn("Duracion");
         modelo.addColumn("Fecha/Hora entrada");
@@ -46,42 +45,30 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     for (Empleado empleado : listaEmpleado) {
         modeloTabla.addRow(new Object[]{
             empleado.getIdentificador(),
-            empleado.getNombre(),
-            empleado.getNumeroTelefono(),
+            empleado.getNombre(),empleado.getNumeroTelefono(),
             empleado.getEspecialidad()
         });}}
-    
-    private void cargarCombos() {
-        // 1. Limpiar combos
-        cmbCliente.removeAllItems();
-        cmbEmpleado.removeAllItems();
-        cmbServicio.removeAllItems();
-        cmbEstado.removeAllItems();
-        /*
-        // 2. Llenar Clientes (Desde GestorDatos)
-        ArrayList<Cliente> listaClientes = GestorDatos.getInstancia().clientes;
-        for(Cliente cliente : listaClientes) {
-            cmbCliente.addItem(cliente); // Agrega el OBJETO completo, no solo el nombre
-        }
-        
-        // 3. Llenar Empleados
-        ArrayList<Empleado> listaEmpleados = GestorDatos.getInstancia().empleados;
-        for(Empleado e : listaEmpleados) {
-            cmbEmpleado.addItem(e);
-        }
-        
-        // 4. Llenar Servicios
-        ArrayList<Servicio> listaServicios = GestorDatos.getInstancia().servicios;
-        for(Servicio s : listaServicios) {
-            cmbServicio.addItem(s);
-        }
-        
-        // 5. Llenar Estados (Valores fijos)
-        cmbEstado.addItem("Pendiente");
-        cmbEstado.addItem("Confirmada");
-        cmbEstado.addItem("Completada");
-        cmbEstado.addItem("Cancelada"); */
+private void cargarCombos() {
+
+    cmbEstado.removeAllItems();
+    cmbEmpleado.removeAllItems();
+    cmbServicio.removeAllItems();
+
+    // Clientes
+    /*for (Cliente cli : GestorCliente.getCliente()) {
+        cmbEstado.addItem(cli);
+    }*/
+
+    // Empleados
+    for (Empleado emp : GestorEmpleado.getEmpleados()) {
+        cmbEmpleado.addItem(emp);
     }
+
+    // Servicios
+    for (Servicio serv : GestorServicio.getServicios()) {
+        cmbServicio.addItem(serv);
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -102,13 +89,13 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         lblHora = new javax.swing.JLabel();
         estado = new javax.swing.JLabel();
         cmbServicio = new javax.swing.JComboBox<>();
-        cmbEmpleado = new javax.swing.JComboBox<>();
         txtID = new javax.swing.JTextField();
-        cmbCliente = new javax.swing.JComboBox<>();
         spnFechaHora = new javax.swing.JSpinner();
         btnAgregar1 = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
         lblBuscar = new javax.swing.JLabel();
+        cmbEmpleado = new javax.swing.JComboBox<>();
+        cmbEstado1 = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMostrarReservaciones = new javax.swing.JTable();
         btnModificar = new javax.swing.JButton();
@@ -117,6 +104,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         btnAgregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -128,29 +116,28 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         FondoBlanco.setBackground(new java.awt.Color(255, 255, 255));
         FondoBlanco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbEstadoActionPerformed(evt);
             }
         });
-        FondoBlanco.add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, -1, -1));
+        FondoBlanco.add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 140, 30));
 
         lblID.setForeground(new java.awt.Color(0, 0, 0));
         lblID.setText("ID:");
-        FondoBlanco.add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 43, 50, -1));
+        FondoBlanco.add(lblID, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 50, -1));
 
         lblCliente.setForeground(new java.awt.Color(0, 0, 0));
         lblCliente.setText("Cliente:");
-        FondoBlanco.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(249, 43, 60, -1));
+        FondoBlanco.add(lblCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 40, 60, -1));
 
         lblServicio.setForeground(new java.awt.Color(0, 0, 0));
         lblServicio.setText("Servicio");
-        FondoBlanco.add(lblServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 95, 50, -1));
+        FondoBlanco.add(lblServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 50, -1));
 
         lblEmpleado.setForeground(new java.awt.Color(0, 0, 0));
         lblEmpleado.setText("Empleado:");
-        FondoBlanco.add(lblEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, 70, -1));
+        FondoBlanco.add(lblEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 70, -1));
 
         lblHora.setForeground(new java.awt.Color(0, 0, 0));
         lblHora.setText("Fecha y hora:");
@@ -158,22 +145,17 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
 
         estado.setForeground(new java.awt.Color(0, 0, 0));
         estado.setText("Estado:");
-        FondoBlanco.add(estado, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 76, -1));
+        FondoBlanco.add(estado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 76, -1));
 
-        FondoBlanco.add(cmbServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 122, 90, 20));
-
-        cmbEmpleado.setPreferredSize(new java.awt.Dimension(70, 20));
-        FondoBlanco.add(cmbEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, 110, -1));
-
-        txtID.setColumns(5);
-        FondoBlanco.add(txtID, new org.netbeans.lib.awtextra.AbsoluteConstraints(29, 63, 100, -1));
-
-        cmbCliente.addActionListener(new java.awt.event.ActionListener() {
+        cmbServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbClienteActionPerformed(evt);
+                cmbServicioActionPerformed(evt);
             }
         });
-        FondoBlanco.add(cmbCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 66, 110, 20));
+        FondoBlanco.add(cmbServicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 140, -1));
+
+        txtID.setColumns(5);
+        FondoBlanco.add(txtID, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 150, -1));
         FondoBlanco.add(spnFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, -1));
 
         btnAgregar1.setText("Buscar");
@@ -183,13 +165,23 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
             }
         });
         FondoBlanco.add(btnAgregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 100, -1));
-        FondoBlanco.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 120, -1));
+        FondoBlanco.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 120, -1));
 
         lblBuscar.setForeground(new java.awt.Color(0, 0, 0));
         lblBuscar.setText("Buscar:");
-        FondoBlanco.add(lblBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 80, -1));
+        FondoBlanco.add(lblBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 80, -1));
 
-        jPanel3.add(FondoBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 66, 475, 310));
+        cmbEmpleado.setPreferredSize(new java.awt.Dimension(70, 20));
+        FondoBlanco.add(cmbEmpleado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, 140, 30));
+
+        cmbEstado1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbEstado1ActionPerformed(evt);
+            }
+        });
+        FondoBlanco.add(cmbEstado1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 140, 30));
+
+        jPanel3.add(FondoBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 66, 490, 310));
 
         tblMostrarReservaciones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -220,7 +212,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
                 btnModificarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 410, 100, -1));
+        jPanel3.add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 410, 100, -1));
 
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -228,7 +220,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
                 btnEliminarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 410, 100, -1));
+        jPanel3.add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 100, -1));
 
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -236,7 +228,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
                 btnRegresarActionPerformed(evt);
             }
         });
-        jPanel3.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 410, 100, -1));
+        jPanel3.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 410, 100, -1));
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -250,7 +242,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,11 +263,11 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         txtID.setText("");
         txtBuscar.setText("");
         txtID.setEditable(true);
-        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
-        if(cmbEmpleado.getItemCount() > 0) cmbEmpleado.setSelectedIndex(0);
+        if(cmbEstado.getItemCount() > 0) cmbEstado.setSelectedIndex(0);
+        if(cmbEstado.getItemCount() > 0) cmbEstado.setSelectedIndex(0);
         if(cmbServicio.getItemCount() > 0) cmbServicio.setSelectedIndex(0);
         if(cmbEstado.getItemCount() > 0) cmbEstado.setSelectedIndex(0);
-    }
+    } 
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
@@ -325,13 +317,17 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void cmbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbClienteActionPerformed
-
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregar1ActionPerformed
+
+    private void cmbServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbServicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbServicioActionPerformed
+
+    private void cmbEstado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstado1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbEstado1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -375,9 +371,9 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JComboBox<String> cmbCliente;
     private javax.swing.JComboBox<Empleado> cmbEmpleado;
     private javax.swing.JComboBox<String> cmbEstado;
+    private javax.swing.JComboBox<String> cmbEstado1;
     private javax.swing.JComboBox<Servicio> cmbServicio;
     private javax.swing.JLabel estado;
     private javax.swing.JPanel jPanel3;

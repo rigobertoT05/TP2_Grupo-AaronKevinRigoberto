@@ -53,6 +53,11 @@ public class Cliente implements Serializable {
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "identificadorUnico=" + identificadorUnico + ", numeroTelefono=" + numeroTelefono + ", nombre=" + nombre + ", correoElectronico=" + correoElectronico + '}';
+    }
  
     
     
