@@ -20,7 +20,7 @@ public class GestionDeClientes extends javax.swing.JFrame {
         this.menu = menu;
         this.setLocationRelativeTo(null);
         configurarTabla();
-        cargarDatosTabla();
+        refrescarTabla();
     }
 
  private void configurarTabla() {
@@ -37,18 +37,6 @@ public class GestionDeClientes extends javax.swing.JFrame {
         
     }
 
-private void cargarDatosTabla() {
-        modeloTabla.setRowCount(0);
-        for (Cliente c : GestorDatos.getInstancia().clientes) {
-            modeloTabla.addRow(new Object[]{
-                c.getIdentificadorUnico(),
-                c.getNombre(),
-                c.getNumeroTelefono(),
-                c.getCorreoElectronico()
-            });
-        }
-    }
-
     private void limpiarCampos() {
         txtID.setText("");
         txtNombre.setText("");
@@ -63,7 +51,7 @@ private void cargarDatosTabla() {
 
     for (Cliente cliente : GestorCliente.getCliente()) {
         modeloTabla.addRow(new Object[]{
-            cliente.getCorreoElectronico(),
+            cliente.getIdentificadorUnico(),
             cliente.getNombre(),
             cliente.getNumeroTelefono(),
             cliente.getCorreoElectronico()
@@ -351,7 +339,7 @@ private void cargarDatosTabla() {
         
         if (resultados.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron resultados");
-            cargarDatosTabla(); // Recargar todos los datos
+         refrescarTabla();
         } else {
             // Enseña los resultados encontrados
             for (Cliente c : resultados) {
@@ -366,8 +354,7 @@ private void cargarDatosTabla() {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-    
-        String id = txtID.getText().trim();
+     String id = txtID.getText().trim();
         String nombre = txtNombre.getText().trim();
         String email = txtEmail.getText().trim();
         String telefonoStr = txtTelefono.getText().trim();
@@ -393,6 +380,12 @@ private void cargarDatosTabla() {
             return;
         }
         
+        // Validar email
+            if (!email.contains("@") ||!email.contains(".com")) {
+                JOptionPane.showMessageDialog(this, "Email inválido, debe contener los caracteres: @,.com");
+                return;
+            }
+            
         int telefono;
         try {
             telefono = Integer.parseInt(telefonoStr);
@@ -406,10 +399,8 @@ private void cargarDatosTabla() {
         GestorCliente.agregarCliente(nuevoCliente);
 
         JOptionPane.showMessageDialog(this, "Cliente se agregó correctamente");
-        limpiarCampos();
-        refrescarTabla();
-        
-        
+         limpiarCampos();
+       
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
@@ -516,8 +507,7 @@ private void cargarDatosTabla() {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-      
-      int fila = tblMostrarDatos.getSelectedRow();
+       int fila = tblMostrarDatos.getSelectedRow();
         if (fila < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
             return;
@@ -530,23 +520,24 @@ private void cargarDatosTabla() {
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
-               String id = txtID.getText();
+               String id = modeloTabla.getValueAt(fila, 0).toString();
 
     boolean eliminado = GestorCliente.eliminarCliente(id);
 
     if (eliminado) {
         JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
         limpiarCampos();
-        refrescarTabla();  
+        
     } else {
         JOptionPane.showMessageDialog(this, "No se pudo eliminar cliente.");
     }
                 limpiarCampos();
-                refrescarTabla();
+               
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
             }
         }
+        
         
     }//GEN-LAST:event_btnEliminarActionPerformed
 
