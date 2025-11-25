@@ -1,6 +1,8 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author kevin
@@ -12,6 +14,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
      */
     public PanelMenuPrincipal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -30,8 +33,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
         btnGestionEmpleados = new javax.swing.JButton();
         btnGestionServicios = new javax.swing.JButton();
         btnGestionReservaciones = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -100,35 +102,25 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(btnGestionReservaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 400, 300, 100));
 
-        jButton5.setBackground(new java.awt.Color(0, 102, 102));
-        jButton5.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jButton5.setForeground(java.awt.Color.white);
-        jButton5.setText("Salir");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setBackground(new java.awt.Color(0, 102, 102));
+        btnSalir.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        btnSalir.setForeground(java.awt.Color.white);
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 510, 300, 100));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Adobe Express - file (2).png"))); // NOI18N
+        jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 510, 300, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -161,9 +153,11 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
       this.setVisible(false);
     }//GEN-LAST:event_btnGestionServiciosActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-     
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+     JOptionPane.showMessageDialog(this, "Muchas gracias por usar nuestro sistema de peluqueria "
+             +"\n" + " Vuelva pronto ");
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,8 +199,7 @@ public class PanelMenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnGestionEmpleados;
     private javax.swing.JButton btnGestionReservaciones;
     private javax.swing.JButton btnGestionServicios;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblSistemaGestionDeReservas;

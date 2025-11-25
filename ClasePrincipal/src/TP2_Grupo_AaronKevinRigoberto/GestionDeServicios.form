@@ -159,11 +159,9 @@
                                       <Component id="jLabel1" min="-2" pref="80" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                      <Component id="txtCostoBase" min="-2" pref="150" max="-2" attributes="0"/>
-                                      <Component id="lblDuración" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblTipoDeServicio" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="txtCostoBase" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="lblDuración" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblTipoDeServicio" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="lblNombreServicio" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
