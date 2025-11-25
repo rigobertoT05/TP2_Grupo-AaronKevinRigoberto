@@ -342,38 +342,74 @@ private void cargarDatosTabla() {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
       
-       String busqueda = txtBuscar.getText().trim().toLowerCase();
-        if (busqueda.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un nombre o teléfono para buscar");
-            return;
-        }
+     String busqueda = txtBuscar.getText().trim();
+        
+  
+        // el método de GestorCliente para buscar
+        ArrayList<Cliente> resultados = GestorCliente.buscarPorNombreOTelefono(busqueda);
 
         modeloTabla.setRowCount(0);
-        boolean encontrado = false;
-
-        for (Cliente c : GestorDatos.getInstancia().clientes) {
-            if (c.getNombre().toLowerCase().contains(busqueda) || 
-                String.valueOf(c.getNumeroTelefono()).contains(busqueda)) {
+        
+        if (resultados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron resultados");
+            cargarDatosTabla(); // Recargar todos los datos
+        } else {
+            // Enseña los resultados encontrados
+            for (Cliente c : resultados) {
                 modeloTabla.addRow(new Object[]{
                     c.getIdentificadorUnico(),
                     c.getNombre(),
                     c.getNumeroTelefono(),
                     c.getCorreoElectronico()
                 });
-                encontrado = true;
             }
         }
-
-        if (!encontrado) {
-            JOptionPane.showMessageDialog(this, "No se encontraron resultados");
-            cargarDatosTabla();
-        } 
-        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       
-     
+    
+        String id = txtID.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String email = txtEmail.getText().trim();
+        String telefonoStr = txtTelefono.getText().trim();
+
+        // Validaciones
+        if (id.isEmpty() || nombre.isEmpty() || email.isEmpty() || telefonoStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
+            return;
+        }
+
+        // Validar ID único usando GestorCliente
+        if (GestorCliente.existeID(id)) {
+            JOptionPane.showMessageDialog(this, 
+                "El identificador ya existe, ingrese uno distinto",
+                "ID duplicado",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validacion telefono
+        if (telefonoStr.length() != 8) {
+            JOptionPane.showMessageDialog(this, "El numero debe tener 8 numeros");
+            return;
+        }
+        
+        int telefono;
+        try {
+            telefono = Integer.parseInt(telefonoStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El telefono debe contener solo numeros");
+            return;
+        }
+
+        // Creando y agregregnado el cliente usando GestorCliente
+        Cliente nuevoCliente = new Cliente(id, telefono, nombre, email);
+        GestorCliente.agregarCliente(nuevoCliente);
+
+        JOptionPane.showMessageDialog(this, "Cliente se agregó correctamente");
+        limpiarCampos();
+        refrescarTabla();
+        
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -412,7 +448,69 @@ private void cargarDatosTabla() {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        
+    
+        String id = txtID.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String email = txtEmail.getText().trim();
+        String telefonoStr = txtTelefono.getText().trim();
+
+        // Validar que se haya ingresado un ID
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un ID para modificar");
+            return;
+        }
+
+        // Verificar que el cliente existe usando GestorCliente
+        Cliente cliente = GestorCliente.buscarPorID(id);
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(this,
+                "No existe un cliente con ese identificador.",
+                "Modificar cliente",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validaciones de campos
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío");
+            return;
+        }
+
+        if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El email no puede estar vacío");
+            return;
+        }
+
+        // Validar teléfono
+        if (telefonoStr.length() != 8) {
+            JOptionPane.showMessageDialog(this, "El número debe tener 8 dígitos");
+            return;
+        }
+
+        int telefono;
+        try {
+            telefono = Integer.parseInt(telefonoStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe contener solo números");
+            return;
+        }
+
+        // Modificar usando GestorCliente
+        boolean modificado = GestorCliente.modificarCliente(id, nombre, telefono, email);
+
+        if (modificado) {
+            JOptionPane.showMessageDialog(this,
+                "Cliente modificado correctamente.",
+                "Modificar cliente",
+                JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
+            refrescarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "No se pudo modificar el cliente.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
       
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -433,16 +531,15 @@ private void cargarDatosTabla() {
             try {
                String id = txtID.getText();
 
-    boolean ok = GestorCliente.eliminarCliente(id);
+    boolean eliminado = GestorCliente.eliminarCliente(id);
 
-    if (ok) {
-        JOptionPane.showMessageDialog(this, "Servicio eliminado.");
-        refrescarTabla();
+    if (eliminado) {
+        JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
+        limpiarCampos();
+        refrescarTabla();  
     } else {
-        JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar cliente.");
     }
-
-
                 limpiarCampos();
                 refrescarTabla();
             } catch (Exception e) {
