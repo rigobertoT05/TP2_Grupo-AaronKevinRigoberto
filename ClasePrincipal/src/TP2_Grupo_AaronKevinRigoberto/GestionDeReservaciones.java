@@ -35,10 +35,8 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         configurarFechaHora();
         configurarTabla();
-        
-        cmbCliente = new javax.swing.JComboBox<>();
-        cmbEmpleado = new javax.swing.JComboBox<>();
-        cmbServicio = new javax.swing.JComboBox<>();
+        cargarCombos();
+
         this.menu = menu;
     }
      private void configurarFechaHora() {
@@ -80,13 +78,16 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
          private void refrescarTabla() {
 
     modeloTabla.setRowCount(0);
-   
-    for (Empleado empleado : listaEmpleado) {
+    for (Reservacion r : GestorReservaciones.getReservaciones()) {
+
         modeloTabla.addRow(new Object[]{
-            empleado.getIdentificador(),
-            empleado.getNombre(),empleado.getNumeroTelefono(),
-            empleado.getEspecialidad()
-        });}} 
+            r.getId(),
+            r.getCliente().getNombre(),
+            r.getServicio().getNombre(),
+            r.getEmpleado().getNombre(),
+            r.getFechaHora()
+        });
+    }} 
          private void cargarCombos() {
 
     cmbCliente.removeAllItems();
@@ -109,6 +110,30 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     cmbEstado1.addItem("Completada");
     cmbEstado1.addItem("Cancelada");
 }
+     private void limpiarCampos() {
+
+    txtID.setText("");
+    txtBuscar.setText("");
+
+    // Reiniciar combos al primer elemento (si existen elementos)
+    if (cmbCliente.getItemCount() > 0)
+        cmbCliente.setSelectedIndex(0);
+
+    if (cmbEmpleado.getItemCount() > 0)
+        cmbEmpleado.setSelectedIndex(0);
+
+    if (cmbServicio.getItemCount() > 0)
+        cmbServicio.setSelectedIndex(0);
+
+    if (cmbEstado1.getItemCount() > 0)
+        cmbEstado1.setSelectedIndex(0);
+
+    // Reiniciar fecha/hora al momento actual
+    spnFechaHora.setValue(new Date());
+
+    // Opcional: limpiar selección de tabla
+    tblMostrarReservaciones.clearSelection();
+}    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -131,7 +156,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         cmbServicio = new javax.swing.JComboBox<>();
         txtID = new javax.swing.JTextField();
         spnFechaHora = new javax.swing.JSpinner();
-        btnAgregar1 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
         lblBuscar = new javax.swing.JLabel();
         cmbEmpleado = new javax.swing.JComboBox<>();
@@ -198,13 +223,13 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         FondoBlanco.add(txtID, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 150, -1));
         FondoBlanco.add(spnFechaHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, -1));
 
-        btnAgregar1.setText("Buscar");
-        btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar1ActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
-        FondoBlanco.add(btnAgregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 100, -1));
+        FondoBlanco.add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 100, -1));
         FondoBlanco.add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 120, -1));
 
         lblBuscar.setForeground(new java.awt.Color(0, 0, 0));
@@ -298,89 +323,132 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbClienteActionPerformed
 
-
-    private void limpiarCampos() {
-        txtID.setText("");
-        txtBuscar.setText("");
-        txtID.setEditable(true);
-        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
-        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
-        if(cmbServicio.getItemCount() > 0) cmbServicio.setSelectedIndex(0);
-        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
-    }
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        
-    // 1. Obtener los objetos seleccionados del combo
-    Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
-    Empleado empleado = (Empleado) cmbEmpleado.getSelectedItem();
-    Servicio servicio = (Servicio) cmbServicio.getSelectedItem();
+          try {
 
-    // 2. Obtener ID, fecha, hora, etc …
-    String id = txtID.getText();
-    Date seleccion = (Date) spnFechaHora.getValue();
+        // 1. Obtener objetos seleccionados del combo
+        Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
+        Empleado empleado = (Empleado) cmbEmpleado.getSelectedItem();
+        Servicio servicio = (Servicio) cmbServicio.getSelectedItem();
 
+        if (cliente == null || empleado == null || servicio == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar cliente, empleado y servicio.");
+            return;
+        }
+
+        // 2. Obtener ID
+        String id = txtID.getText().trim();
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El ID no puede estar vacío.");
+            return;
+        }
+
+        if (GestorReservaciones.existeID(id)) {
+            JOptionPane.showMessageDialog(this, "Ya existe una reservación con ese ID.");
+            return;
+        }
+
+        // 3. Obtener fecha desde el spinner
+        Date seleccion = (Date) spnFechaHora.getValue();
         if (seleccion == null) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha y hora.");
             return;
         }
+
         LocalDateTime fecha = seleccion.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+
         if (fecha.isBefore(LocalDateTime.now())) {
             JOptionPane.showMessageDialog(this, "No puede seleccionar una fecha pasada.");
             return;
         }
-        
-    Reservacion nuevaReservacion;// 3. Crear la reservación
-    nuevaReservacion = new Reservacion(id, cliente,empleado, servicio, fecha);
 
-    // 4. Guardarla
-    GestorReservaciones.agregarReservacion(nuevaReservacion);
+        // 4. Crear Reservación 
+        Reservacion nuevaReservacion = new Reservacion(id,cliente,empleado,servicio,fecha);
 
-    // 5. Aviso
-    JOptionPane.showMessageDialog(this, "Reservación agregada correctamente");
+        // 5. Guardar
+        GestorReservaciones.agregarReservacion(nuevaReservacion);
 
-    // 6. Refrescar tabla
-    refrescarTabla();
+        JOptionPane.showMessageDialog(this, "Reservación agregada correctamente.");
+
+        // 6. Actualizar tabla
+        refrescarTabla();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al agregar: " + e.getMessage());
+    }
+          limpiarCampos();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+    int fila = tblMostrarReservaciones.getSelectedRow();
 
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una reservación en la tabla.");
+        return;
+    }
+
+    String id = tblMostrarReservaciones.getValueAt(fila, 0).toString();
+
+    Reservacion reservacion = GestorReservaciones.buscarPorID(id);
+
+    if (reservacion == null) {
+        JOptionPane.showMessageDialog(this, "Error: la reservación no existe.");
+        return;
+    }
+
+    // Obtener nueva fecha/hora del spinner
+    Date seleccion = (Date) spnFechaHora.getValue();
+    if (seleccion == null) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha y hora.");
+        return;
+    }
+
+    LocalDateTime nuevaFecha = seleccion.toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime();
+
+    if (nuevaFecha.isBefore(LocalDateTime.now())) {
+        JOptionPane.showMessageDialog(this, "No puede seleccionar una fecha pasada.");
+        return;
+    }
+
+    // Modificar
+    if (GestorReservaciones.modificarReservacion(id, nuevaFecha)) {
+        JOptionPane.showMessageDialog(this, "Reservación modificada correctamente.");
+        refrescarTabla();
+    } else {
+        JOptionPane.showMessageDialog(this, "No se pudo modificar la reservación.");
+    } 
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        int fila = tblMostrarReservaciones.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
-            return;
-        }
+    int fila = tblMostrarReservaciones.getSelectedRow();
 
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-            "¿Está seguro de eliminar este cliente?",
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una reservación en la tabla.");
+        return;
+    }
+
+    String id = tblMostrarReservaciones.getValueAt(fila, 0).toString();
+
+    int confirmar = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro que desea eliminar la reservación con ID: " + id + "?",
             "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION);
+            JOptionPane.YES_NO_OPTION
+    );
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            try {
-                String id = txtID.getText();
-
-                boolean ok = GestorCliente.eliminarCliente(id);
-
-                if (ok) {
-                    JOptionPane.showMessageDialog(this, "Servicio eliminado.");
-                    refrescarTabla();
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
-                }
-
-                limpiarCampos();
-                refrescarTabla();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
-            }
+    if (confirmar == JOptionPane.YES_OPTION) {
+        if (GestorReservaciones.eliminarReservacion(id)) {
+            JOptionPane.showMessageDialog(this, "Reservación eliminada correctamente.");
+            refrescarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: no se pudo eliminar la reservación.");
         }
+    }
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -389,9 +457,36 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregar1ActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+       
+    String nombre = txtBuscar.getText().trim();
+
+    if (nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un nombre de cliente.");
+        return;
+    }
+
+    ArrayList<Reservacion> resultados = GestorReservaciones.buscarPorCliente(nombre);
+
+    if (resultados.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No se encontraron reservaciones para ese cliente.");
+        return;
+    }
+
+    // Llenar tabla solo con los resultados
+    DefaultTableModel model = (DefaultTableModel) tblMostrarReservaciones.getModel();
+    model.setRowCount(0);
+
+    for (Reservacion r : resultados) {
+        model.addRow(new Object[]{
+            r.getId(),
+            r.getCliente().getNombre(),
+            r.getServicio().getNombre(),
+            r.getEmpleado().getNombre(),
+            r.getFechaHora().toString()
+        });
+    } // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void cmbServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbServicioActionPerformed
         // TODO add your handling code here:
@@ -439,7 +534,7 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel FondoBlanco;
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnAgregar1;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegresar;
