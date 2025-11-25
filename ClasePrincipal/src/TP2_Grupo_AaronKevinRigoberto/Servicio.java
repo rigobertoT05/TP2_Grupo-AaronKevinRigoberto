@@ -2,6 +2,7 @@
 package TP2_Grupo_AaronKevinRigoberto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -11,14 +12,25 @@ public abstract class Servicio implements Serializable {
     protected String nombre;
     protected int duracionMinutos;
     protected double costo;
+    private LocalDateTime fechaHora;
+
     
 
-    public Servicio(String identificador, String nombre, int duracionMinutos, double costo) {
+    public Servicio(String identificador, String nombre, int duracionMinutos, double costo,LocalDateTime fechaHora ) {
         this.identificador = identificador;
         this.nombre = nombre;
+        this.fechaHora = fechaHora;
         this.duracionMinutos = duracionMinutos;
         this.costo = costo;
 }
+
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
+    }
 
     public String getIdentificador() {
         return identificador;
