@@ -22,6 +22,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
         initComponents();
         configurarTabla();
         this.menu = menu;
+        this.setLocationRelativeTo(null);
     }
     
      private void refrescarTabla() {

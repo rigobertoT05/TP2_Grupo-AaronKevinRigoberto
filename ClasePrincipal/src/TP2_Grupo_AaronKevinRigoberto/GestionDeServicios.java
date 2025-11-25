@@ -33,6 +33,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     public GestionDeServicios(PanelMenuPrincipal menu) {
         initComponents();
         this.menu = menu;
+        this.setLocationRelativeTo(null);
         configurarTabla();
         configurarComboDuracion();
          configurarFechaHora();

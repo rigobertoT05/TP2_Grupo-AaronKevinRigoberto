@@ -18,11 +18,10 @@ public class GestionDeClientes extends javax.swing.JFrame {
     public GestionDeClientes(PanelMenuPrincipal menu) {
         initComponents();
         this.menu = menu;
+        this.setLocationRelativeTo(null);
         configurarTabla();
         cargarDatosTabla();
     }
-
-
 
  private void configurarTabla() {
         // Crea modelo de tabla con columnas no editables
@@ -453,12 +452,14 @@ private void cargarDatosTabla() {
         String nombre = txtNombre.getText().trim();
         String email = txtEmail.getText().trim();
         String telefonoStr = txtTelefono.getText().trim();
-
-        // Validar que se haya ingresado un ID
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un ID para modificar");
+        
+        int fila = tblMostrarDatos.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
             return;
         }
+
+ 
 
         // Verificar que el cliente existe usando GestorCliente
         Cliente cliente = GestorCliente.buscarPorID(id);
