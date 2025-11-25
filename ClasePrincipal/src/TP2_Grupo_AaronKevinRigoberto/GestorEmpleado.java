@@ -3,62 +3,59 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package TP2_Grupo_AaronKevinRigoberto;
-
 import java.util.ArrayList;
-import java.util.Set;
 
-/**
- *
- * @author rigoberto
- */
+
+
 public class GestorEmpleado {
-    public static ArrayList<Empleado> listaEmpleado = new ArrayList<>();
 
-    public static void agregarEmpleado(Empleado Empleado){
-        listaEmpleado.add(Empleado);
+    private static final GestorDatos gestorDatos = GestorDatos.getInstancia();
+
+    public GestorEmpleado() {
+        gestorDatos.guardarDatos();
     }
-    
-    public static Empleado buscarPorID(String id){
-        for (Empleado empleado : listaEmpleado) {
-            if (empleado.getIdentificador().equals(id)) {
-                return empleado;
+
+    public static void agregarEmpleado(Empleado empleado) {
+        gestorDatos.empleados.add(empleado);
+        gestorDatos.guardarDatos();
+    }
+
+    public static Empleado buscarPorID(String id) {
+        for (Empleado empleadoActual : gestorDatos.empleados) {
+            if (empleadoActual.getIdentificador().equals(id)) {
+                return empleadoActual;
             }
         }
         return null;
     }
-    
-    public static boolean eliminarEmpleado(String id){
-     Empleado empleado = buscarPorID(id);
-        if (empleado != null) {
-            listaEmpleado.remove(empleado);
-            return true;
-        }
-        return false;}
-    
-    public static boolean existeID(String id) {
-    for (Empleado empleado : listaEmpleado) {
-        if (empleado.getIdentificador().equalsIgnoreCase(id)) {
-            return true;
-        }
-    }
-    return false;
-}
-    
-    public static boolean modificarEmpleado(String id, String nombre,String especialidad,int telefono){
-    Empleado empleado = buscarPorID(id);
-        if (empleado != null) {
-            
-            empleado.nombre = nombre;
-            empleado.especialidad = especialidad;
-            empleado.numeroTelefono = telefono;
-            empleado.setNumeroTelefono(telefono);
 
+    public static boolean eliminarEmpleado(String id) {
+        Empleado empleadoActual = buscarPorID(id);
+        if (empleadoActual != null) {
+            gestorDatos.empleados.remove(empleadoActual);
+            gestorDatos.guardarDatos();
             return true;
         }
         return false;
     }
-    
-    public static ArrayList<Empleado> getEmpleados(){
-        return listaEmpleado;
-    } 
+
+    public static boolean existeID(String id) {
+        return buscarPorID(id) != null;
+    }
+
+    public static boolean modificarEmpleado(String id, String nombre, String especialidad, int telefono) {
+        Empleado empleadoActual = buscarPorID(id);
+        if (empleadoActual != null) {
+            empleadoActual.nombre = nombre;
+            empleadoActual.especialidad = especialidad;
+            empleadoActual.numeroTelefono = telefono;
+            gestorDatos.guardarDatos();
+            return true;
+        }
+        return false;
+    }
+
+    public static ArrayList<Empleado> getEmpleados() {
+        return gestorDatos.empleados;
+    }
 }

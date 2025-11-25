@@ -11,62 +11,68 @@ import java.util.ArrayList;
  *
  * @author rigoberto
  */
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+
 public class GestorServicio {
-    public static ArrayList<Servicio> listaServicios = new ArrayList<>();
-    
-    public static void agregarServicio(Servicio servicios){
-        listaServicios.add(servicios);
+
+    private static final GestorDatos gestorDatos = GestorDatos.getInstancia();
+
+    public GestorServicio() {
+        gestorDatos.guardarDatos();
     }
-    
-    public static Servicio buscarPorID(String id){
-        for (Servicio servicio : listaServicios) {
-            if (servicio.getIdentificador().equals(id)) {
-                return servicio;
+
+    public void agregarServicio(Servicio servicio) {
+        gestorDatos.servicios.add(servicio);
+        gestorDatos.guardarDatos();
+    }
+
+    public Servicio buscarPorID(String id) {
+        for (Servicio servicioActual : gestorDatos.servicios) {
+            if (servicioActual.getIdentificador().equalsIgnoreCase(id)) {
+                return servicioActual;
             }
         }
         return null;
     }
-    
-    public static ArrayList<Servicio> buscarDisponibles(LocalDateTime fecha) {
-    ArrayList<Servicio> disponibles = new ArrayList<>();
-    
-    for (Servicio servicio : listaServicios) {
-        if (servicio.getFechaHora().equals(fecha)) {
-            disponibles.add(servicio);
+
+    public ArrayList<Servicio> buscarDisponibles(LocalDateTime fecha) {
+        ArrayList<Servicio> disponibles = new ArrayList<>();
+        for (Servicio servicioActual : gestorDatos.servicios) {
+            if (servicioActual.getFechaHora().equals(fecha)) {
+                disponibles.add(servicioActual);
+            }
         }
+        return disponibles;
     }
-    return disponibles;
-}
-    public static boolean eliminarServicio(String id){
-     Servicio servicio = buscarPorID(id);
-        if (servicio != null) {
-            listaServicios.remove(servicio);
-            return true;
-        }
-     return false;    
-    }
-    
-    public static boolean existeID(String id) {
-    for (Servicio servicio : listaServicios) {
-        if (servicio.getIdentificador().equalsIgnoreCase(id)) {
-            return true;
-        }
-    }
-    return false;
-}
-    
-    public static boolean modificarServicio(String id, String nombre,int duracion, double costo){
-    Servicio servicio = buscarPorID(id);
-        if (servicio != null) {
-            servicio.nombre = nombre;
-            servicio.duracionMinutos = duracion;
-            servicio.costo = costo;
+
+    public boolean eliminarServicio(String id) {
+        Servicio servicioActual = buscarPorID(id);
+        if (servicioActual != null) {
+            gestorDatos.servicios.remove(servicioActual);
+            gestorDatos.guardarDatos();
             return true;
         }
         return false;
     }
-    
-    public static ArrayList<Servicio> getServicios(){
-        return listaServicios;
+
+    public boolean existeID(String id) {
+        return buscarPorID(id) != null;
+    }
+
+    public boolean modificarServicio(String id, String nombre, int duracion, double costo) {
+        Servicio servicioActual = buscarPorID(id);
+        if (servicioActual != null) {
+            servicioActual.setNombre(nombre);
+            servicioActual.setDuracionMinutos(duracion);
+            servicioActual.setCosto(costo);
+            gestorDatos.guardarDatos();
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<Servicio> getServicios() {
+        return gestorDatos.servicios;
     }
 }

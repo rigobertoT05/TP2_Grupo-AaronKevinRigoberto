@@ -2,8 +2,6 @@
 package TP2_Grupo_AaronKevinRigoberto;
 
 
-import static TP2_Grupo_AaronKevinRigoberto.GestorCliente.listaClientes;
-import static TP2_Grupo_AaronKevinRigoberto.GestorEmpleado.listaEmpleado;
 import TP2_Grupo_AaronKevinRigoberto.GestorReservaciones;
 import TP2_Grupo_AaronKevinRigoberto.Reservacion;
 import java.awt.event.KeyAdapter;
@@ -106,7 +104,8 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     }
 
     cmbServicio.removeAllItems();
-    for (Servicio servicio : GestorServicio.getServicios()) {
+     GestorServicio gestorServicio = new GestorServicio();
+    for (Servicio servicio : gestorServicio.getServicios()) {
         cmbServicio.addItem(servicio); // OBJETO
     }
 

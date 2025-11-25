@@ -4,6 +4,7 @@
  */
 package TP2_Grupo_AaronKevinRigoberto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -12,88 +13,73 @@ import java.util.ArrayList;
  * @author rigoberto
  */
 public class GestorReservaciones {
-    public static ArrayList<Reservacion> listaReservaciones = new ArrayList();
-    
-    // Agregar
-    public static void agregarReservacion(Reservacion reservacion){
-        listaReservaciones.add(reservacion);
+
+    private static final GestorDatos gestorDatos = GestorDatos.getInstancia();
+
+    public static void agregarReservacion(Reservacion reservacion) {
+        gestorDatos.reservaciones.add(reservacion);
+        gestorDatos.guardarDatos();
     }
 
-    // Buscar por ID
-    public static Reservacion buscarPorID(String id){
-        for (Reservacion reservacio : listaReservaciones) {
-            if (reservacio.getId().equals(id)) {
-                return reservacio;
+    public static Reservacion buscarPorID(String id) {
+        for (Reservacion reservacionActual : gestorDatos.reservaciones) {
+            if (reservacionActual.getId().equals(id)) {
+                return reservacionActual;
             }
         }
         return null;
     }
 
-    // Eliminar
-    public static boolean eliminarReservacion(String id){
-        Reservacion r = buscarPorID(id);
-        if (r != null) {
-            listaReservaciones.remove(r);
+    public static boolean eliminarReservacion(String id) {
+        Reservacion reservacionActual = buscarPorID(id);
+        if (reservacionActual != null) {
+            gestorDatos.reservaciones.remove(reservacionActual);
+            gestorDatos.guardarDatos();
             return true;
         }
         return false;
     }
 
-    // Existe ID
-    public static boolean existeID(String id){
-        for (Reservacion reservacio : listaReservaciones) {
-            if (reservacio.getId().equalsIgnoreCase(id)) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean existeID(String id) {
+        return buscarPorID(id) != null;
     }
 
-    // Modificar (solo fecha/hora, el cliente/empleado/servicio no cambian en la mayoría de sistemas)
-    public static boolean modificarReservacion(String id, java.time.LocalDateTime nuevaFechaHora){
-        Reservacion r = buscarPorID(id);
-        if (r != null) {
-            r.setFechaHora(nuevaFechaHora);
+    public static boolean modificarReservacion(String id, LocalDateTime nuevaFechaHora) {
+        Reservacion reservacionActual = buscarPorID(id);
+        if (reservacionActual != null) {
+            reservacionActual.setFechaHora(nuevaFechaHora);
+            gestorDatos.guardarDatos();
             return true;
         }
         return false;
     }
 
-    // Buscar por cliente (nombre)
-    public static ArrayList<Reservacion> buscarPorCliente(String nombreCliente){
+    public static ArrayList<Reservacion> buscarPorCliente(String nombreCliente) {
         ArrayList<Reservacion> resultado = new ArrayList<>();
         String criterio = nombreCliente.toLowerCase().trim();
-
-        for (Reservacion r : listaReservaciones) {
-            if (r.getCliente().getNombre().toLowerCase().contains(criterio)) {
-                resultado.add(r);
+        for (Reservacion reservacionActual : gestorDatos.reservaciones) {
+            if (reservacionActual.getCliente().getNombre().toLowerCase().contains(criterio)) {
+                resultado.add(reservacionActual);
             }
         }
-
         return resultado;
     }
 
-    // Buscar por empleado y fecha (en formato YYYY-MM-DD)
-    public static ArrayList<Reservacion> buscarPorEmpleadoYFecha(String nombreEmpleado, String fecha){
+    public static ArrayList<Reservacion> buscarPorEmpleadoYFecha(String nombreEmpleado, String fecha) {
         ArrayList<Reservacion> resultado = new ArrayList<>();
         String criterioEmpleado = nombreEmpleado.toLowerCase().trim();
-
-        for (Reservacion r : listaReservaciones) {
-            String fechaReserva = r.getFechaHora().toLocalDate().toString();
-
-            if (r.getEmpleado().getNombre().toLowerCase().contains(criterioEmpleado)
+        for (Reservacion reservacionActual : gestorDatos.reservaciones) {
+            String fechaReserva = reservacionActual.getFechaHora().toLocalDate().toString();
+            if (reservacionActual.getEmpleado().getNombre().toLowerCase().contains(criterioEmpleado)
                     && fechaReserva.equals(fecha)) {
-
-                resultado.add(r);
+                resultado.add(reservacionActual);
             }
         }
-
         return resultado;
     }
 
- 
-    public static ArrayList<Reservacion> getReservaciones(){
-        return listaReservaciones;
+    public static ArrayList<Reservacion> getReservaciones() {
+        return gestorDatos.reservaciones;
     }
 }
 

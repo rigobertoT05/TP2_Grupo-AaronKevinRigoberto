@@ -1,12 +1,10 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
-import TP2_Grupo_AaronKevinRigoberto.GestorServicio;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import javax.swing.JOptionPane;
 
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,7 +26,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
      private PanelMenuPrincipal menu;               
      private DefaultTableModel modeloTabla;                  
      ArrayList<Servicio> listaServicios;
-     
+     GestorServicio gestorServicio = new GestorServicio();
     public GestionDeServicios(PanelMenuPrincipal menu) {
         initComponents();
         this.menu = menu;
@@ -102,7 +99,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
 
     modeloTabla.setRowCount(0);
 
-    for (Servicio servicio : GestorServicio.getServicios()) {
+    for (Servicio servicio : gestorServicio.getServicios()) {
         modeloTabla.addRow(new Object[]{
             servicio.getIdentificador(),
             servicio.getNombre(),
@@ -446,7 +443,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     String selccionDuracion = (String) cmbDuracion.getSelectedItem();
     double costoBase; int duracion;
     // validar ID unico
-    if (GestorServicio.existeID(id)) {
+    if (gestorServicio.existeID(id)) {
         JOptionPane.showMessageDialog(this,
                 "El identificador ya existe. Ingrese uno diferente.",
                 "ID duplicado",
@@ -490,7 +487,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
         } catch (NumberFormatException e) { JOptionPane.showMessageDialog(this,
                 "Ingrese un costo válido. "); return ;}
         
-        if (GestorServicio.buscarPorID(id) != null) {
+        if (gestorServicio.buscarPorID(id) != null) {
             JOptionPane.showMessageDialog(this,"Ya existe un servicio con ese ID."); return;
         }
         String tipo = cmbTipoDeServicio.getSelectedItem().toString();
@@ -506,11 +503,12 @@ public class GestionDeServicios extends javax.swing.JFrame {
             
             default: JOptionPane.showMessageDialog(this,"Tipo no reconocido."); return;}
        
-        GestorServicio.agregarServicio(nuevoServicio);
+        gestorServicio.agregarServicio(nuevoServicio);
         
         JOptionPane.showMessageDialog(this, "Servicio agregado corecamente");
         
      limpiarCampos();
+     refrescarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -579,7 +577,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     }
 
     // -------- MODIFICAR EN EL GESTOR --------
-    boolean ok = GestorServicio.modificarServicio(id, nombre, duracion, costo);
+    boolean ok = gestorServicio.modificarServicio(id, nombre, duracion, costo);
 
     if (ok) {
         JOptionPane.showMessageDialog(this, "Servicio modificado correctamente.");
@@ -595,7 +593,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     
     String id = txtIDServicio.getText();
 
-    boolean ok = GestorServicio.eliminarServicio(id);
+    boolean ok = gestorServicio.eliminarServicio(id);
 
     if (ok) {
         JOptionPane.showMessageDialog(this, "Servicio eliminado.");
