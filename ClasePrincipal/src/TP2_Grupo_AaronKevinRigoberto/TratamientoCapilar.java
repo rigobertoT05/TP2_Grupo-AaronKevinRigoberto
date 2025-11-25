@@ -4,15 +4,18 @@
  */
 package TP2_Grupo_AaronKevinRigoberto;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author rigoberto
  */
 public class TratamientoCapilar extends Servicio {
 
-    public TratamientoCapilar(String identificador, String nombre, int duracionMinutos, double costo) {
-        super(identificador, nombre, duracionMinutos, costo);
+    public TratamientoCapilar(String identificador, String nombre, int duracionMinutos, double costo, LocalDateTime fechaHora) {
+        super(identificador, nombre, duracionMinutos, costo, fechaHora);
     }
+
 
     @Override
     public String obtenerDetalleServicio() {

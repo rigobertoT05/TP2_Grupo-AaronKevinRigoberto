@@ -2,11 +2,20 @@
 package TP2_Grupo_AaronKevinRigoberto;
 
 import TP2_Grupo_AaronKevinRigoberto.GestorServicio;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.swing.JOptionPane;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,42 +35,35 @@ public class GestionDeServicios extends javax.swing.JFrame {
         this.menu = menu;
         configurarTabla();
         configurarComboDuracion();
-        agregarEventoSeleccionTabla();
-
+         configurarFechaHora();
     }
     
-    private void agregarEventoSeleccionTabla() {
-        
-    tblMostrarDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+   private void configurarFechaHora() {
+     Date hoy = new Date();
+    SpinnerDateModel modelo = new SpinnerDateModel(hoy, hoy, null, Calendar.MINUTE);
+    spnFechaHora.setModel(modelo);
+
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spnFechaHora, "dd/MM/yyyy HH:mm");
+    spnFechaHora.setEditor(editor);
+
+    JFormattedTextField campo = editor.getTextField();
+    campo.setFocusLostBehavior(JFormattedTextField.COMMIT);
+
+    campo.addKeyListener(new KeyAdapter() {
         @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
+        public void keyPressed(KeyEvent e) {
+            int pos = campo.getCaretPosition();
+            String texto = campo.getText();
 
-            int fila = tblMostrarDatos.getSelectedRow();
+            if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && pos > 0) {
+                char anterior = texto.charAt(pos - 1);
 
-            if (fila >= 0) {
-
-                // ID
-                txtIDServicio.setText(
-                    modeloTabla.getValueAt(fila, 0).toString()
-                );
-
-                // Nombre
-                txtNombreServicio.setText(
-                    modeloTabla.getValueAt(fila, 1).toString()
-                );
-
-                // Duración
-                String dur = modeloTabla.getValueAt(fila, 2).toString();
-                cmbDuracion.setSelectedItem(dur);
-
-                // Costo → quitarle "₡"
-                String costo = modeloTabla.getValueAt(fila, 3).toString();
-                costo = costo.replace("₡", "");
-                txtCostoBase.setText(costo.trim());
+                if (anterior == '/' || anterior == ':' || anterior == ' ') {
+                    e.consume();
+                }
             }
         }
-    });
-}
+    }); }
     private void configurarComboDuracion() {
 
     cmbDuracion.removeAllItems();
@@ -92,6 +94,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Duracion (min/h)");
         modeloTabla.addColumn("Costo");
+        modeloTabla.addColumn("Fecha y hora:");
         tblMostrarDatos.setModel(modeloTabla);}
     
     private void refrescarTabla() {
@@ -103,12 +106,14 @@ public class GestionDeServicios extends javax.swing.JFrame {
             servicio.getIdentificador(),
             servicio.getNombre(),
             servicio.getDuracionMinutos(),
-            servicio.getCosto() + "₡"
+            servicio.getCosto() + "₡",
+            servicio.getFechaHora()
+                
         });
     }
 }
 
-    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -119,6 +124,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -134,12 +140,16 @@ public class GestionDeServicios extends javax.swing.JFrame {
         lblDuración = new javax.swing.JLabel();
         cmbTipoDeServicio = new javax.swing.JComboBox<>();
         cmbDuracion = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        spnFechaHora = new javax.swing.JSpinner();
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         ScrollTabla = new javax.swing.JScrollPane();
         tblMostrarDatos = new javax.swing.JTable();
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -151,15 +161,19 @@ public class GestionDeServicios extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         lblDatosServicios.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblDatosServicios.setForeground(new java.awt.Color(0, 0, 0));
         lblDatosServicios.setText("Datos del Servicio");
 
         lblIDServicio.setForeground(java.awt.Color.black);
         lblIDServicio.setText("ID");
 
+        lblNombreServicio.setForeground(new java.awt.Color(0, 0, 0));
         lblNombreServicio.setText("Nombre del Servicio:");
 
+        lblCostoBase.setForeground(new java.awt.Color(0, 0, 0));
         lblCostoBase.setText("Costo Base (₡):");
 
+        lblTipoDeServicio.setForeground(new java.awt.Color(0, 0, 0));
         lblTipoDeServicio.setText("Tipo de Servicios:");
 
         txtIDServicio.addActionListener(new java.awt.event.ActionListener() {
@@ -181,9 +195,13 @@ public class GestionDeServicios extends javax.swing.JFrame {
             }
         });
 
+        lblDuración.setForeground(new java.awt.Color(0, 0, 0));
         lblDuración.setText("Duracion (minutos/horas):");
 
         cmbTipoDeServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Opcion", "Trantamiento Capilar", "Corte de Cabello", "Manicure" }));
+
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Fecha y hora:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -197,8 +215,6 @@ public class GestionDeServicios extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCostoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDuración)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -212,9 +228,20 @@ public class GestionDeServicios extends javax.swing.JFrame {
                                             .addComponent(txtNombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(33, 33, 33)))
                                 .addComponent(btnListar))
-                            .addComponent(lblNombreServicio)
-                            .addComponent(cmbTipoDeServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTipoDeServicio))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cmbTipoDeServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(64, 64, 64))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCostoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblDuración)
+                                .addComponent(lblTipoDeServicio))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblNombreServicio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(spnFechaHora, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(19, 19, 19)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -228,10 +255,14 @@ public class GestionDeServicios extends javax.swing.JFrame {
                 .addComponent(txtIDServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(lblTipoDeServicio)
-                .addGap(18, 18, 18)
-                .addComponent(cmbTipoDeServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblNombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cmbTipoDeServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnFechaHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtNombreServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -306,25 +337,24 @@ public class GestionDeServicios extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(ScrollTabla))
-                .addContainerGap())
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(143, 143, 143))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(ScrollTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,7 +370,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
                     .addComponent(btnEliminar)
                     .addComponent(btnRegresar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ScrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addComponent(ScrollTabla, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -350,7 +380,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,6 +433,19 @@ public class GestionDeServicios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"La duración debe ser mayor que 0.");
         return; }
         
+        Date seleccion = (Date) spnFechaHora.getValue();
+
+        if (seleccion == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha y hora.");
+            return;
+        }
+        LocalDateTime fecha = seleccion.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        if (fecha.isBefore(LocalDateTime.now())) {
+            JOptionPane.showMessageDialog(this, "No puede seleccionar una fecha pasada.");
+            return;
+        }
         try {
             costoBase = Double.parseDouble(txtCostoBase.getText());
             if (costoBase <= 0) {
@@ -419,11 +462,11 @@ public class GestionDeServicios extends javax.swing.JFrame {
         
             switch (tipo) {
             case "Corte de Cabello":
-                nuevoServicio = new CorteCabello(id, nombre,duracion,costoBase,false); break;
+                nuevoServicio = new CorteCabello(id, nombre,duracion,costoBase,fecha); break;
             case "Trantamiento Capilar":
-                nuevoServicio = new TratamientoCapilar(tipo, nombre, duracion, costoBase); break;
+                nuevoServicio = new TratamientoCapilar(tipo, nombre, duracion, costoBase,fecha); break;
             case "Manicure": 
-                nuevoServicio = new TratamientoCapilar(tipo, nombre, duracion, costoBase); break;
+                nuevoServicio = new Manicure(tipo, nombre, duracion, costoBase,fecha); break;
             
             default: JOptionPane.showMessageDialog(this,"Tipo no reconocido."); return;}
        
@@ -576,7 +619,9 @@ public class GestionDeServicios extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbDuracion;
     private javax.swing.JComboBox<String> cmbTipoDeServicio;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblCostoBase;
@@ -585,6 +630,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
     private javax.swing.JLabel lblIDServicio;
     private javax.swing.JLabel lblNombreServicio;
     private javax.swing.JLabel lblTipoDeServicio;
+    private javax.swing.JSpinner spnFechaHora;
     private javax.swing.JTable tblMostrarDatos;
     private javax.swing.JTextField txtCostoBase;
     private javax.swing.JTextField txtIDServicio;

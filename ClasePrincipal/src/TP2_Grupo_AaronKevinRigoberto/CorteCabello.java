@@ -4,6 +4,8 @@
  */
 package TP2_Grupo_AaronKevinRigoberto;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author rigoberto
@@ -12,10 +14,10 @@ package TP2_Grupo_AaronKevinRigoberto;
 public class CorteCabello extends Servicio {
     private boolean incluyeLavado;
 
-    public CorteCabello(String id, String nom, int dur, double costo, boolean incluyeLavado) {
-        super(id, nom, dur, costo);
-        this.incluyeLavado = incluyeLavado;
+    public CorteCabello(String identificador, String nombre, int duracionMinutos, double costo, LocalDateTime fechaHora) {
+        super(identificador, nombre, duracionMinutos, costo, fechaHora);
     }
+
 
     @Override
     public String obtenerDetalleServicio() {

@@ -4,13 +4,16 @@
  */
 package TP2_Grupo_AaronKevinRigoberto;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author rigoberto
  */
 public class Manicure extends Servicio {
-    public Manicure(String id, String nom, int dur, double costo) {
-        super(id, nom, dur, costo);
+
+    public Manicure(String identificador, String nombre, int duracionMinutos, double costo, LocalDateTime fechaHora) {
+        super(identificador, nombre, duracionMinutos, costo, fechaHora);
     }
 
     @Override

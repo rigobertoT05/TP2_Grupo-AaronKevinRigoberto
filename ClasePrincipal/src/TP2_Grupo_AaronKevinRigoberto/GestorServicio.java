@@ -4,6 +4,7 @@
  */
 package TP2_Grupo_AaronKevinRigoberto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +27,16 @@ public class GestorServicio {
         return null;
     }
     
+    public static ArrayList<Servicio> buscarDisponibles(LocalDateTime fecha) {
+    ArrayList<Servicio> disponibles = new ArrayList<>();
+    
+    for (Servicio servicio : listaServicios) {
+        if (servicio.getFechaHora().equals(fecha)) {
+            disponibles.add(servicio);
+        }
+    }
+    return disponibles;
+}
     public static boolean eliminarServicio(String id){
      Servicio servicio = buscarPorID(id);
         if (servicio != null) {
