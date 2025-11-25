@@ -1,12 +1,10 @@
 
 package TP2_Grupo_AaronKevinRigoberto;
 
-import TP2_Grupo_AaronKevinRigoberto.GestorServicio;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import javax.swing.JOptionPane;
 
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 /**

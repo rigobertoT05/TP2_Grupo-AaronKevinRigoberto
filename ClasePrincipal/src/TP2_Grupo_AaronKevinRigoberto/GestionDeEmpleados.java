@@ -13,8 +13,9 @@ import java.util.ArrayList;
 public class GestionDeEmpleados extends javax.swing.JFrame {
 
     private PanelMenuPrincipal menu;
-    private DefaultTableModel modeloTabla;
+    DefaultTableModel modelo;
     ArrayList<Empleado> listaEmpleados;
+    
     public GestionDeEmpleados(PanelMenuPrincipal menu) {
         initComponents();
         DefaultTableModel modeloTabla;
@@ -25,24 +26,30 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     
      private void refrescarTabla() {
 
-    modeloTabla.setRowCount(0);
+    modelo.setRowCount(0);
    
-    for (Empleado empleado : listaEmpleado) {
-        modeloTabla.addRow(new Object[]{
+    for (Empleado empleado : GestorEmpleado.getEmpleados()) {
+        modelo.addRow(new Object[]{
             empleado.getIdentificador(),
             empleado.getNombre(),
             empleado.getNumeroTelefono(),
             empleado.getEspecialidad()
         });}}
     private void configurarTabla() {
-    modeloTabla = new DefaultTableModel();
-        modeloTabla.addColumn("ID");
-        modeloTabla.addColumn("Nombre");
-        modeloTabla.addColumn("Teléfono");
-        modeloTabla.addColumn("Especialidad");
-        tblMostrarDatosEmpleados.setModel(modeloTabla);
+    modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Telefono");
+        modelo.addColumn("Especialidad");
+        tblMostrarDatosEmpleados.setModel(modelo);
     }
-    
+    private void limpiarCampos(){
+        txtID.setText("");
+        txtNombre.setText("");
+        txtTelefono.setText("");
+        cmbEspecialista.setSelectedIndex(0);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -321,108 +328,146 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        String id = id = txtID.getText().trim();
-        String nombre = nombre = txtNombre.getText().trim(); 
+         String id = txtID.getText().trim();
+        String nombre = txtNombre.getText().trim(); 
         String especialidad = (String) cmbEspecialista.getSelectedItem();
         
+        // Validaciones
+        if (id.isBlank() || nombre.isBlank() || especialidad.equalsIgnoreCase("Seleccione opcion")){
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
+            return;
+        } 
         
-            // Validaciones
-            if (id.isBlank() || nombre.isBlank() || especialidad.equalsIgnoreCase("Seleccione opcion")){
-                JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
-                return;
-            } 
-            // Validar ID único
-            if (GestorEmpleado.existeID(id)) {
-              JOptionPane.showMessageDialog(this,
-          "El identificador ya existe, ingrese un distntos.");
-              return; }
-            
-            // validar tamaño de numero
-            String numero = txtTelefono.getText().trim();
-            if (numero.length() != 8) {
-            JOptionPane.showMessageDialog(this,"El numero debe de tener 8 digitos"); return;
-        } int telefono = Integer.parseInt(numero);
-            
-         Empleado nuevoEmpleado;
-         nuevoEmpleado = new Empleado(id,nombre,especialidad,telefono);
-         GestorEmpleado.agregarEmpleado(nuevoEmpleado);
+        // Validar ID único
+        if (GestorEmpleado.existeID(id)) {
+            JOptionPane.showMessageDialog(this,
+                "El identificador ya existe, ingrese uno distinto.");
+            return; 
+        }
         
+        // validar tamaño de numero
+        String numero = txtTelefono.getText().trim();
+        if (numero.length() != 8) {
+            JOptionPane.showMessageDialog(this,"El numero debe de tener 8 digitos"); 
+            return;
+        } 
         
-          JOptionPane.showMessageDialog(this, "Empleado agregado corecamente");
-          limpiarCampos();
+        int telefono;
+        try {
+            telefono = Integer.parseInt(numero);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe contener solo números");
+            return;
+        }
+        
+        // CREAR Y AGREGAR EL EMPLEADO
+        Empleado nuevoEmpleado = new Empleado(id, nombre, especialidad, telefono);
+        GestorEmpleado.agregarEmpleado(nuevoEmpleado);
+        
+        JOptionPane.showMessageDialog(this, "Empleado agregado correctamente");
+        limpiarCampos();
+        refrescarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
  
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        String id = txtID.getText().trim();
+       String id = txtID.getText().trim();
         String nombre = txtNombre.getText().trim();
         String especialidad = (String) cmbEspecialista.getSelectedItem();
-        // Validar que el empleado exista
-    Empleado empleado = GestorEmpleado.buscarPorID(id);
-    if (empleado == null) {
-        JOptionPane.showMessageDialog(this,
-                "No existe un servicio con ese identificador.",
-                "Modificar servicio",
+        
+        // Verificar que el empleado exista usando GestorEmpleado
+        Empleado empleado = GestorEmpleado.buscarPorID(id);
+        if (empleado == null) {
+            JOptionPane.showMessageDialog(this,
+                "No existe un empleado con ese identificador.",
+                "Modificar empleado",
                 JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+            return;
+        }
+
         // Validar nombre
         if (nombre.isEmpty()) {
             JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
-            return;}
-         // validar tamaño de numero
-            String numero = txtTelefono.getText().trim();
-            if (numero.length() != 8) {
-            JOptionPane.showMessageDialog(this,"El numero debe de tener 8 digitos"); return;
-        } int telefono = Integer.parseInt(numero);
+            return;
+        }
+        
+        // validar tamaño de numero
+        String numero = txtTelefono.getText().trim();
+        if (numero.length() != 8) {
+            JOptionPane.showMessageDialog(this,"El numero debe de tener 8 digitos"); 
+            return;
+        } 
+        
+        int telefono;
+        try {
+            telefono = Integer.parseInt(numero);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe contener solo números");
+            return;
+        }
+        
         //validar especialidad
         if (especialidad.equalsIgnoreCase("Seleccione opcion")) {
-            JOptionPane.showMessageDialog(this,"Selecione una opcion de especialista"); return;}
+            JOptionPane.showMessageDialog(this,"Seleccione una opción de especialista"); 
+            return;
+        }
     
-        boolean EmpleadoEcnontrado = GestorEmpleado.modificarEmpleado(id, nombre, especialidad, telefono);
+        boolean EmpleadoEncontrado = GestorEmpleado.modificarEmpleado(id, nombre, especialidad, telefono);
 
-    if (EmpleadoEcnontrado) {
-        JOptionPane.showMessageDialog(this,
-                "Servicio modificado correctamente.",
-                "Modificar servicio",
+        if (EmpleadoEncontrado) {
+            JOptionPane.showMessageDialog(this,
+                "Empleado modificado correctamente.",
+                "Modificar empleado",
                 JOptionPane.INFORMATION_MESSAGE);
-        refrescarTabla(); // 👈 IMPORTANTE
-    } else {
-        JOptionPane.showMessageDialog(this,
-                "No se pudo modificar el servicio.",
+            limpiarCampos();
+            refrescarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "No se pudo modificar el empleado.",
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
-    }
-
+        }
                                                 
 
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-    String id = txtID.getText();
+    String id = txtID.getText().trim();
+        
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un ID");
+            return;
+        }
 
-    boolean ok = GestorEmpleado.eliminarEmpleado(id);
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro de eliminar este empleado?", 
+            "Confirmar eliminación", 
+            JOptionPane.YES_NO_OPTION);
 
-    if (ok) {
-        JOptionPane.showMessageDialog(this, "Empleado eliminado.");
-        refrescarTabla();
-    } else {
-        JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
-    }
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            boolean ok = GestorEmpleado.eliminarEmpleado(id);
 
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Empleado eliminado.");
+                limpiarCampos();
+                refrescarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el empleado.");
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
-
+/*
     private void limpiarCampos(){
     txtID.setText("");
     txtNombre.setText("");
     txtTelefono.setText("");
     cmbEspecialista.setSelectedItem("Seleccione opcion");
-    }
+    }*/
     /**
      * @param args the command line arguments
      */
