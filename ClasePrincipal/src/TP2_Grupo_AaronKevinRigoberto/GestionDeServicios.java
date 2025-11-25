@@ -108,22 +108,48 @@ public class GestionDeServicios extends javax.swing.JFrame {
             servicio.getNombre(),
             servicio.getDuracionMinutos(),
             servicio.getCosto() + "₡",
-            servicio.getFechaHora()
-                
-        });
-        
-    }
-}
+            servicio.getFechaHora() });}}
      private void limpiarCampos() {
         txtCostoBase.setText("");
         txtIDServicio.setText("");
         txtNombreServicio.setText("");
         cmbDuracion.setSelectedIndex(0);
         cmbTipoDeServicio.setSelectedItem("Seleccionar Opcion");
-        
+        txtIDServicio.setEditable(true);
     }
+     private void tblMostrarDatosKeyReleased(java.awt.event.KeyEvent evt) {
+    tblMostrarDatosMouseClicked(null);
+}
+    private void tblMostrarDatosMouseClicked(java.awt.event.MouseEvent evt) {                                             
+        System.out.println("EVENTO DISPARADO");
+        int fila = tblMostrarDatos.getSelectedRow();
+        if (fila < 0) return;
 
+        // --- EXTRAER DATOS ---
 
+        String id = tblMostrarDatos.getValueAt(fila, 0).toString();
+        String nombre = tblMostrarDatos.getValueAt(fila, 1).toString();
+        String duracion = tblMostrarDatos.getValueAt(fila, 2).toString();
+        String costo = tblMostrarDatos.getValueAt(fila, 3).toString();
+        LocalDateTime fecha = (LocalDateTime) tblMostrarDatos.getValueAt(fila, 4);
+        String tipo = tblMostrarDatos.getValueAt(fila, 5).toString();
+
+        // --- PASAR AL FORMULARIO ---
+
+        txtIDServicio.setText(id);
+        txtNombreServicio.setText(nombre);
+        cmbDuracion.setSelectedItem(duracion);
+        txtCostoBase.setText(costo);
+
+        // Spinner fecha/hora → requiere convertir otra vez a Date
+        Date fechaConvertida = Date.from(fecha.atZone(ZoneId.systemDefault()).toInstant());
+        spnFechaHora.setValue(fechaConvertida);
+
+        cmbTipoDeServicio.setSelectedItem(tipo);
+        tblMostrarDatosMouseClicked(null); 
+        // --- BLOQUEAR ID ---
+        txtIDServicio.setEnabled(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -493,30 +519,36 @@ public class GestionDeServicios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-                                       
-    String id = txtIDServicio.getText().trim();
+   
+    int fila = tblMostrarDatos.getSelectedRow();
+    if (fila < 0) {
+        JOptionPane.showMessageDialog(this, "Seleccione un servicio de la tabla.");
+        return;
+    }
+
+    // Confirmación antes de modificar
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de modificar este servicio?",
+            "Confirmar modificación",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return; // Cancelado
+    }
+
+    // -------- OBTENER DATOS --------
+    String id = txtIDServicio.getText().trim();   // YA ESTÁ BLOQUEADO
     String nombre = txtNombreServicio.getText().trim();
     String seleccionDuracion = (String) cmbDuracion.getSelectedItem();
 
-    if (id.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar un ID.");
-        return;
-    }
-    // Validar que el servicio exista
-    Servicio servicio = GestorServicio.buscarPorID(id);
-    if (servicio == null) {
-        JOptionPane.showMessageDialog(this,
-                "No existe un servicio con ese identificador.",
-                "Modificar servicio",
-                JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    // Validar nombre
     if (nombre.isEmpty()) {
         JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.");
         return;
     }
-    // Procesar duración
+
+    // Duración
     int duracion;
     try {
         if (seleccionDuracion.endsWith("min")) {
@@ -525,17 +557,15 @@ public class GestionDeServicios extends javax.swing.JFrame {
             int horas = Integer.parseInt(seleccionDuracion.replace(" h", "").trim());
             duracion = horas * 60;
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Formato de duración inválido.",
-                    "Error en duración",
-                    JOptionPane.ERROR_MESSAGE);return;}
-    } catch (NumberFormatException ex) {  JOptionPane.showMessageDialog(this, "Duración inválida. Debe ser un número.","Error en duración",JOptionPane.ERROR_MESSAGE);return;
+            JOptionPane.showMessageDialog(this, "Formato de duración inválido.");
+            return;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Duración inválida.");
+        return;
     }
 
-    if (duracion <= 0) {JOptionPane.showMessageDialog(this,"La duración debe ser mayor a 0.","Duración inválida",JOptionPane.ERROR_MESSAGE);  return;
-   }
-
-    // Validar costo
+    // Costo
     double costo;
     try {
         costo = Double.parseDouble(txtCostoBase.getText().trim());
@@ -548,22 +578,17 @@ public class GestionDeServicios extends javax.swing.JFrame {
         return;
     }
 
-    // Modificar usando el Gestor
+    // -------- MODIFICAR EN EL GESTOR --------
     boolean ok = GestorServicio.modificarServicio(id, nombre, duracion, costo);
 
     if (ok) {
-        JOptionPane.showMessageDialog(this,
-                "Servicio modificado correctamente.",
-                "Modificar servicio",
-                JOptionPane.INFORMATION_MESSAGE);
-        refrescarTabla(); // 👈 IMPORTANTE
-    } else {
-        JOptionPane.showMessageDialog(this,
-                "No se pudo modificar el servicio.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-    }
+        JOptionPane.showMessageDialog(this, "Servicio modificado correctamente.");
 
+        refrescarTabla();
+        limpiarCampos();
+    } else {
+        JOptionPane.showMessageDialog(this, "No se pudo modificar el servicio.");
+    }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

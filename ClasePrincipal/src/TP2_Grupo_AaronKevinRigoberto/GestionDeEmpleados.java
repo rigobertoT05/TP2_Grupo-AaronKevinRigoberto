@@ -353,6 +353,11 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
  
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+          int fila = tblMostrarDatosEmpleados.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un Empleado de la tabla");
+            return;
+        }
         String id = txtID.getText().trim();
         String nombre = txtNombre.getText().trim();
         String especialidad = (String) cmbEspecialista.getSelectedItem();
