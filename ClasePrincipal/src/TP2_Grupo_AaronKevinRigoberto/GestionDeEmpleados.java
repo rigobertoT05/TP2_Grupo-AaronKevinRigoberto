@@ -17,6 +17,7 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
     ArrayList<Empleado> listaEmpleados;
     public GestionDeEmpleados(PanelMenuPrincipal menu) {
         initComponents();
+        DefaultTableModel modeloTabla;
         configurarTabla();
         this.menu = menu;
         this.setLocationRelativeTo(null);
