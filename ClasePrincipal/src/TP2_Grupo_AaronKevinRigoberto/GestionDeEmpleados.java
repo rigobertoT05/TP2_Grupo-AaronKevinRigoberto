@@ -432,29 +432,37 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-    String id = txtID.getText().trim();
-        
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un ID");
+     int fila = tblMostrarDatosEmpleados.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
             return;
         }
 
         int confirmacion = JOptionPane.showConfirmDialog(this, 
-            "¿Está seguro de eliminar este empleado?", 
+            "¿Está seguro de eliminar este cliente?", 
             "Confirmar eliminación", 
             JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            boolean ok = GestorEmpleado.eliminarEmpleado(id);
+            try {
+               String id = modelo.getValueAt(fila, 0).toString();
 
-            if (ok) {
-                JOptionPane.showMessageDialog(this, "Empleado eliminado.");
+    boolean eliminado = GestorCliente.eliminarCliente(id);
+
+    if (eliminado) {
+        JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
+        limpiarCampos();
+        
+    } else {
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar cliente.");
+    }
                 limpiarCampos();
-                refrescarTabla();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el empleado.");
+               
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
             }
         }
+        
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed

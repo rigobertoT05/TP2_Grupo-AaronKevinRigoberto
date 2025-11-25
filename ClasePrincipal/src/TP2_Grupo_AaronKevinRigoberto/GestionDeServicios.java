@@ -565,18 +565,37 @@ public class GestionDeServicios extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
     
-    String id = txtIDServicio.getText();
+     int fila = tblMostrarDatos.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla");
+            return;
+        }
 
-    boolean ok = GestorServicio.eliminarServicio(id);
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            "¿Está seguro de eliminar este cliente?", 
+            "Confirmar eliminación", 
+            JOptionPane.YES_NO_OPTION);
 
-    if (ok) {
-        JOptionPane.showMessageDialog(this, "Servicio eliminado.");
-        refrescarTabla();
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+               String id = modeloTabla.getValueAt(fila, 0).toString();
+
+    boolean eliminado = GestorCliente.eliminarCliente(id);
+
+    if (eliminado) {
+        JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
+        limpiarCampos();
+        
     } else {
-        JOptionPane.showMessageDialog(this, "No se pudo eliminar.");
+        JOptionPane.showMessageDialog(this, "No se pudo eliminar cliente.");
     }
-
-
+                limpiarCampos();
+               
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+            }
+        }
+        
         
 // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
