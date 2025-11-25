@@ -12,9 +12,6 @@ import java.util.ArrayList;
 
 public class GestionDeEmpleados extends javax.swing.JFrame {
 
-    
-    
-    DefaultTableModel modelo;
     private PanelMenuPrincipal menu;
     private DefaultTableModel modeloTabla;
     ArrayList<Empleado> listaEmpleados;
@@ -37,13 +34,14 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
             empleado.getEspecialidad()
         });}}
     private void configurarTabla() {
-    modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Teléfono");
-        modelo.addColumn("Especialidad");
-        tblMostrarDatosEmpleados.setModel(modelo);
+    modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("ID");
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Teléfono");
+        modeloTabla.addColumn("Especialidad");
+        tblMostrarDatosEmpleados.setModel(modeloTabla);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -346,11 +344,13 @@ public class GestionDeEmpleados extends javax.swing.JFrame {
             
          Empleado nuevoEmpleado;
          nuevoEmpleado = new Empleado(id,nombre,especialidad,telefono);
+         GestorEmpleado.agregarEmpleado(nuevoEmpleado);
         
         
           JOptionPane.showMessageDialog(this, "Empleado agregado corecamente");
+          limpiarCampos();
     }//GEN-LAST:event_btnAgregarActionPerformed
-
+ 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         String id = txtID.getText().trim();
         String nombre = txtNombre.getText().trim();

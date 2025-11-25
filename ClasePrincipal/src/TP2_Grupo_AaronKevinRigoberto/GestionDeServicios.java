@@ -111,8 +111,17 @@ public class GestionDeServicios extends javax.swing.JFrame {
             servicio.getFechaHora()
                 
         });
+        
     }
 }
+     private void limpiarCampos() {
+        txtCostoBase.setText("");
+        txtIDServicio.setText("");
+        txtNombreServicio.setText("");
+        cmbDuracion.setSelectedIndex(0);
+        cmbTipoDeServicio.setSelectedItem("Seleccionar Opcion");
+        
+    }
 
 
 
@@ -475,7 +484,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
         
         JOptionPane.showMessageDialog(this, "Servicio agregado corecamente");
         
-     
+     limpiarCampos();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
