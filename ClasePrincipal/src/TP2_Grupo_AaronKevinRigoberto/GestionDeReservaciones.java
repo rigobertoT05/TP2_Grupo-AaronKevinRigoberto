@@ -4,9 +4,20 @@ package TP2_Grupo_AaronKevinRigoberto;
 
 import static TP2_Grupo_AaronKevinRigoberto.GestorCliente.listaClientes;
 import static TP2_Grupo_AaronKevinRigoberto.GestorEmpleado.listaEmpleado;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JFormattedTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 
 /**
  *
@@ -22,12 +33,40 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
     public GestionDeReservaciones(PanelMenuPrincipal menu) {
         initComponents();
         this.setLocationRelativeTo(null);
+        configurarFechaHora();
+        configurarTabla();
         
-        cmbEstado = new javax.swing.JComboBox<>();
+        cmbCliente = new javax.swing.JComboBox<>();
         cmbEmpleado = new javax.swing.JComboBox<>();
         cmbServicio = new javax.swing.JComboBox<>();
         this.menu = menu;
     }
+     private void configurarFechaHora() {
+     Date hoy = new Date();
+    SpinnerDateModel modelo = new SpinnerDateModel(hoy, hoy, null, Calendar.MINUTE);
+    spnFechaHora.setModel(modelo);
+
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spnFechaHora, "dd/MM/yyyy HH:mm");
+    spnFechaHora.setEditor(editor);
+
+    JFormattedTextField campo = editor.getTextField();
+    campo.setFocusLostBehavior(JFormattedTextField.COMMIT);
+
+    campo.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int pos = campo.getCaretPosition();
+            String texto = campo.getText();
+
+            if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && pos > 0) {
+                char anterior = texto.charAt(pos - 1);
+
+                if (anterior == '/' || anterior == ':' || anterior == ' ') {
+                    e.consume();
+                }
+            }
+        }
+    }); }   
     private void configurarTabla() {
         modelo = new DefaultTableModel();
         modelo.addColumn("ID Reserva");
@@ -47,27 +86,28 @@ public class GestionDeReservaciones extends javax.swing.JFrame {
             empleado.getIdentificador(),
             empleado.getNombre(),empleado.getNumeroTelefono(),
             empleado.getEspecialidad()
-        });}}
-private void cargarCombos() {
+        });}} 
+         private void cargarCombos() {
 
-    cmbEstado.removeAllItems();
+    cmbCliente.removeAllItems();
+    for (Cliente cliente : GestorCliente.getCliente()) {
+        cmbCliente.addItem(cliente.getNombre()); // OBJETO
+    }
+
     cmbEmpleado.removeAllItems();
+    for (Empleado empleado : GestorEmpleado.getEmpleados()) {
+        cmbEmpleado.addItem(empleado); // OBJETO
+    }
+
     cmbServicio.removeAllItems();
-
-    // Clientes
-    /*for (Cliente cli : GestorCliente.getCliente()) {
-        cmbEstado.addItem(cli);
-    }*/
-
-    // Empleados
-    for (Empleado emp : GestorEmpleado.getEmpleados()) {
-        cmbEmpleado.addItem(emp);
+    for (Servicio servicio : GestorServicio.getServicios()) {
+        cmbServicio.addItem(servicio); // OBJETO
     }
 
-    // Servicios
-    for (Servicio serv : GestorServicio.getServicios()) {
-        cmbServicio.addItem(serv);
-    }
+    cmbEstado1.removeAllItems();
+    cmbEstado1.addItem("Pendiente");
+    cmbEstado1.addItem("Completada");
+    cmbEstado1.addItem("Cancelada");
 }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,7 +121,7 @@ private void cargarCombos() {
         jPanel3 = new javax.swing.JPanel();
         lblGestiondeReservacion = new javax.swing.JLabel();
         FondoBlanco = new javax.swing.JPanel();
-        cmbEstado = new javax.swing.JComboBox<>();
+        cmbCliente = new javax.swing.JComboBox<>();
         lblID = new javax.swing.JLabel();
         lblCliente = new javax.swing.JLabel();
         lblServicio = new javax.swing.JLabel();
@@ -116,12 +156,12 @@ private void cargarCombos() {
         FondoBlanco.setBackground(new java.awt.Color(255, 255, 255));
         FondoBlanco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cmbEstado.addActionListener(new java.awt.event.ActionListener() {
+        cmbCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbEstadoActionPerformed(evt);
+                cmbClienteActionPerformed(evt);
             }
         });
-        FondoBlanco.add(cmbEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 140, 30));
+        FondoBlanco.add(cmbCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 140, 30));
 
         lblID.setForeground(new java.awt.Color(0, 0, 0));
         lblID.setText("ID:");
@@ -254,23 +294,55 @@ private void cargarCombos() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
+    private void cmbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmbEstadoActionPerformed
+    }//GEN-LAST:event_cmbClienteActionPerformed
 
 
     private void limpiarCampos() {
         txtID.setText("");
         txtBuscar.setText("");
         txtID.setEditable(true);
-        if(cmbEstado.getItemCount() > 0) cmbEstado.setSelectedIndex(0);
-        if(cmbEstado.getItemCount() > 0) cmbEstado.setSelectedIndex(0);
+        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
+        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
         if(cmbServicio.getItemCount() > 0) cmbServicio.setSelectedIndex(0);
-        if(cmbEstado.getItemCount() > 0) cmbEstado.setSelectedIndex(0);
-    } 
+        if(cmbCliente.getItemCount() > 0) cmbCliente.setSelectedIndex(0);
+    }
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        
+    // 1. Obtener los objetos seleccionados del combo
+    Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
+    Empleado empleado = (Empleado) cmbEmpleado.getSelectedItem();
+    Servicio servicio = (Servicio) cmbServicio.getSelectedItem();
 
+    // 2. Obtener ID, fecha, hora, etc …
+    String id = txtID.getText();
+    Date seleccion = (Date) spnFechaHora.getValue();
+
+        if (seleccion == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha y hora.");
+            return;
+        }
+        LocalDateTime fecha = seleccion.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        if (fecha.isBefore(LocalDateTime.now())) {
+            JOptionPane.showMessageDialog(this, "No puede seleccionar una fecha pasada.");
+            return;
+        }
+        
+    Reservacion nuevaReservacion;// 3. Crear la reservación
+    nuevaReservacion = new Reservacion(id, cliente,empleado, servicio, fecha);
+
+    // 4. Guardarla
+    GestorReservaciones.agregarReservacion(nuevaReservacion);
+
+    // 5. Aviso
+    JOptionPane.showMessageDialog(this, "Reservación agregada correctamente");
+
+    // 6. Refrescar tabla
+    refrescarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -371,8 +443,8 @@ private void cargarCombos() {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> cmbCliente;
     private javax.swing.JComboBox<Empleado> cmbEmpleado;
-    private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JComboBox<String> cmbEstado1;
     private javax.swing.JComboBox<Servicio> cmbServicio;
     private javax.swing.JLabel estado;

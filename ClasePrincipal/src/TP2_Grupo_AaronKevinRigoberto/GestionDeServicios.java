@@ -64,7 +64,7 @@ public class GestionDeServicios extends javax.swing.JFrame {
                 }
             }
         }
-    }); }
+    }); }   
     private void configurarComboDuracion() {
 
     cmbDuracion.removeAllItems();

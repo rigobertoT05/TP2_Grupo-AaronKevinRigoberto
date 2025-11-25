@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 public class Cliente implements Serializable {
     
     // Atributos de la clase Cliente
-    private String identificadorUnico;
-    private int numeroTelefono;
-    private String nombre, correoElectronico;
+    protected String identificadorUnico;
+    protected int numeroTelefono;
+    protected String nombre, correoElectronico;
     
 //constructor
 
@@ -56,7 +56,7 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Cliente{" + "identificadorUnico=" + identificadorUnico + ", numeroTelefono=" + numeroTelefono + ", nombre=" + nombre + ", correoElectronico=" + correoElectronico + '}';
+        return nombre;
     }
  
     

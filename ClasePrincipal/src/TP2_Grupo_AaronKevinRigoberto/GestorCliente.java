@@ -9,14 +9,15 @@ import java.util.ArrayList;
 public class GestorCliente {
       public static ArrayList<Cliente> listaClientes = new ArrayList<>();
       
-       public static void agregarCliente(Cliente cliente) {
-        listaClientes.add(cliente);
+       public static void agregarCliente(Cliente clientes) {
+        listaClientes.add(clientes);
     }
        
     
    public static Cliente buscarPorID(String id) {
-        for (Cliente cliente : listaClientes) {
-            if (cliente.getIdentificadorUnico() == id) {
+        for (Cliente cliente : listaClientes) {if 
+       (cliente.getIdentificadorUnico().equals(id))
+           {
                 return cliente;
             }
         }
@@ -59,7 +60,7 @@ public class GestorCliente {
    
    public static boolean existeID(String id) {
         for (Cliente cliente : listaClientes) {
-            if (cliente.getIdentificadorUnico() == id) {
+            if (cliente.getIdentificadorUnico().equalsIgnoreCase(id)) {
                 return true;
             }
         }
@@ -80,9 +81,9 @@ public class GestorCliente {
     public static boolean modificarCliente(String id, String nombre, int telefono, String email) {
         Cliente cliente = buscarPorID(id);
         if (cliente != null) {
-            cliente.setNombre(nombre);
-            cliente.setNumeroTelefono(telefono);
-            cliente.setCorreoElectronico(email);
+            cliente.nombre = nombre;
+            cliente.numeroTelefono = telefono;
+            cliente.correoElectronico = email;
             return true;
         }
         return false;

@@ -13,15 +13,12 @@ public abstract class Servicio implements Serializable {
     protected int duracionMinutos;
     protected double costo;
     private LocalDateTime fechaHora;
-
-    
-
-    public Servicio(String identificador, String nombre, int duracionMinutos, double costo,LocalDateTime fechaHora ) {
+   public Servicio(String identificador, String nombre, int duracionMinutos, double costo,LocalDateTime fechaHora) {
         this.identificador = identificador;
         this.nombre = nombre;
-        this.fechaHora = fechaHora;
         this.duracionMinutos = duracionMinutos;
         this.costo = costo;
+        this.fechaHora = fechaHora;
 }
 
     public LocalDateTime getFechaHora() {
@@ -66,7 +63,7 @@ public abstract class Servicio implements Serializable {
 
     @Override
     public String toString() {
-        return "Servicio{" + "identificador=" + identificador + ", nombre=" + nombre + ", duracionMinutos=" + duracionMinutos + ", costo=" + costo + ", fechaHora=" + fechaHora + '}';
+        return  nombre;
     }
 
     

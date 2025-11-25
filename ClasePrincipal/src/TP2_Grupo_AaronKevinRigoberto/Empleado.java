@@ -52,7 +52,7 @@ public class Empleado implements Serializable {
 
     @Override
     public String toString() {
-        return "Empleado{" + "identificador=" + identificador + ", nombre=" + nombre + ", especialidad=" + especialidad + ", numeroTelefono=" + numeroTelefono + '}';
+        return nombre;
     }
  
     

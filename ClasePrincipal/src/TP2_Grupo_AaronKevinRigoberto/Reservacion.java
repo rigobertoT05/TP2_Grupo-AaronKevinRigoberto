@@ -11,14 +11,14 @@ public class Reservacion implements Serializable {
     private Servicio servicio;
     private LocalDateTime fechaHora;
     
-    public Reservacion(String fecha, Cliente cliente,Servicio servicio, Empleado empleado,LocalDateTime fechaHora){
+    public Reservacion(String id, Cliente cliente,Empleado empleado,Servicio servicio,LocalDateTime fechaHora){
         this.id = id;
         this.cliente = cliente;
         this.empleado = empleado;
         this.servicio = servicio;
         this.fechaHora = fechaHora;
     }
-
+    
     public String getId() {
         return id;
     }
